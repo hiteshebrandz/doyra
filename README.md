@@ -49,11 +49,12 @@ These are the Firebase **web client** config values (Project settings → Your a
 
 ## Vercel deployment
 
-1. Push the `doyra` folder to a Git repository (or import the monorepo root and set root directory to `doyra`).
-2. Import the project in [Vercel](https://vercel.com).
-3. Add the same `NEXT_PUBLIC_FIREBASE_*` variables in **Project → Settings → Environment Variables**.
-4. Deploy. Add the production domain under Firebase **Authorized domains**.
-5. After deploy, open the site, sign up, and install as a PWA from the browser menu if desired.
+1. Import [hiteshebrandz/doyra](https://github.com/hiteshebrandz/doyra) in [Vercel](https://vercel.com) (root directory = repo root).
+2. Firebase web config is already in committed `.env.production` (safe for `NEXT_PUBLIC_*` client keys). Vercel will pick it up on build. You can still override the same keys under **Project → Settings → Environment Variables** if you prefer.
+3. Deploy, then in Firebase **Authentication → Settings → Authorized domains** add your Vercel domain (e.g. `your-app.vercel.app`).
+4. After deploy, open the site, sign up, and install as a PWA from the browser menu if desired.
+
+Do **not** commit `.env.local` — that stays on your machine for local `npm run dev`.
 
 ## Read / write optimization strategy
 
