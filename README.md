@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Doyra
 
-## Getting Started
+**Plan it. Do it. Repeat.**
 
-First, run the development server:
+Doyra is a personal Task & Habit Manager built with Next.js (App Router), Tailwind CSS, Firebase Auth, and Firestore. It feels like a native app on phones (PWA + bottom tabs) and a polished dashboard on desktop.
+
+## Local setup
 
 ```bash
+cd doyra
+npm install
+cp .env.example .env.local
+# Fill in Firebase web config values in .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Requires **Node.js 20+**.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment variables
 
-## Learn More
+Copy `.env.example` to `.env.local` and set:
 
-To learn more about Next.js, take a look at the following resources:
+```
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+These are the Firebase **web client** config values (Project settings → Your apps).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Firebase console checklist
 
-## Deploy on Vercel
+1. Create (or open) your Firebase project (Spark free plan is fine).
+2. **Authentication → Sign-in method**
+   - Enable **Email/Password**
+   - Enable **Google**
+3. **Authentication → Settings → Authorized domains**
+   - Add `localhost` (usually present)
+   - Add your Vercel domain (e.g. `your-app.vercel.app`) and custom domain if any
+4. **Firestore Database**
+   - Create a Firestore database
+   - Deploy rules from `firestore.rules` (users can only read/write their own `/users/{uid}/**` docs)
+5. Do **not** enable Cloud Storage or Analytics for this app — not used.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Vercel deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Push the `doyra` folder to a Git repository (or import the monorepo root and set root directory to `doyra`).
+2. Import the project in [Vercel](https://vercel.com).
+3. Add the same `NEXT_PUBLIC_FIREBASE_*` variables in **Project → Settings → Environment Variables**.
+4. Deploy. Add the production domain under Firebase **Authorized domains**.
+5. After deploy, open the site, sign up, and install as a PWA from the browser menu if desired.
+
+## Read / write optimization strategy
+
+Firestore bills per document read and write. Doyra is designed to stay far under the free tier for normal daily use (**target ~15 reads / ~30 writes per day**).
+
+### Few documents, not one-per-item
+
+| Path | Contents |
+|------|----------|
+| `users/{uid}/meta/settings` | theme, displayName, weekStart |
+| `users/{uid}/meta/habits` | `{ items: Habit[] }` |
+| `users/{uid}/tasks/active` | `{ items: { [id]: Task } }` |
+| `users/{uid}/tasks/archive_YYYY-MM` | completed tasks older than 30 days |
+| `users/{uid}/logs/YYYY-MM` | `{ days: { "01": { [habitId]: true } } }` |
+
+### Rules of the data layer
+
+- **Initial load ≤ 4 reads:** settings, habits, `tasks/active`, current month log. Other months load only when navigated.
+- **`getDoc` only** — no `onSnapshot`, no polling.
+- **In-memory Zustand store** is the session source of truth; UI never reads Firestore directly after hydrate.
+- **Optimistic updates** + **~1s debounced coalesce** so each document is written at most once per flush.
+- Field-path updates (`items.<id>`, `days.<dd>.<habitId>`) — never rewrite a whole document for one change.
+- Flush on `visibilitychange` / `pagehide` / `beforeunload`.
+- Habit check-in = one tiny update on that month’s log doc.
+- Completed tasks older than 30 days rotate to monthly archive docs (guards the **1 MiB** document limit).
+- Persistent local cache (`persistentLocalCache` + `persistentMultipleTabManager`) serves repeat loads from the browser when possible.
+- Dev-only usage logger: watch the console for `[doyra:usage]` read/write counts.
+
+### Backup
+
+Settings → **Export JSON** / **Import JSON** is the backup and restore path (batched write on import).
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Development server |
+| `npm run build` | Production build |
+| `npm run start` | Serve production build |
+| `npm run lint` | ESLint |
+
+## Stack
+
+Next.js · TypeScript · Tailwind CSS · next-themes · Framer Motion · Lucide · Firebase JS SDK · Zustand · Recharts (lazy) · PWA manifest
