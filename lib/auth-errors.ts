@@ -21,6 +21,10 @@ export function mapAuthError(code: string): string {
       return "Network error. Check your connection and try again.";
     case "auth/missing-email":
       return "Please enter your email address.";
+    case "auth/operation-not-allowed":
+      return "This sign-in method is disabled in Firebase. Enable Email/Password and Google under Authentication → Sign-in method.";
+    case "auth/unauthorized-domain":
+      return "This site URL is not allowed. Add your Vercel domain under Authentication → Settings → Authorized domains.";
     default:
       return "Something went wrong. Please try again.";
   }
