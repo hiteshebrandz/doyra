@@ -38,20 +38,20 @@ export function AuthGuard({
 export function AuthSplash() {
   return (
     <div
-      className="mesh-bg flex min-h-[100dvh] flex-col items-center justify-center gap-4"
+      className="flex min-h-[100dvh] flex-col items-center justify-center gap-4 bg-surface"
       role="status"
       aria-live="polite"
       aria-label="Loading"
     >
       <Image
         src="/doyra-mark.svg"
-        alt="Doyra"
+        alt="Doyrai"
         width={56}
         height={56}
         priority
         className="animate-pulse"
       />
-      <p className="text-sm text-[var(--muted)]">Loading Doyra…</p>
+      <p className="text-sm text-on-surface-variant">Loading Doyrai…</p>
     </div>
   );
 }

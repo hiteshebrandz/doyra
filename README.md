@@ -1,8 +1,8 @@
-# Doyra
+# Doyrai
 
 **Plan it. Do it. Repeat.**
 
-Doyra is a personal Task & Habit Manager built with Next.js (App Router), Tailwind CSS, Firebase Auth, and Firestore. It feels like a native app on phones (PWA + bottom tabs) and a polished dashboard on desktop.
+Doyrai is a personal Task & Habit Manager built with Next.js (App Router), Tailwind CSS, Firebase Auth, and Firestore. It feels like a native app on phones (PWA + bottom tabs) and a polished dashboard on desktop.
 
 ## Local setup
 
@@ -58,7 +58,7 @@ Do **not** commit `.env.local` — that stays on your machine for local `npm run
 
 ## Read / write optimization strategy
 
-Firestore bills per document read and write. Doyra is designed to stay far under the free tier for normal daily use (**target ~15 reads / ~30 writes per day**).
+Firestore bills per document read and write. Doyrai is designed to stay far under the free tier for normal daily use (**target ~15 reads / ~30 writes per day**).
 
 ### Few documents, not one-per-item
 

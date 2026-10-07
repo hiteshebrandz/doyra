@@ -45,7 +45,7 @@ export default function SettingsPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `doyra-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `doyrai-backup-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
     toast({ title: "Backup downloaded" });
@@ -93,107 +93,109 @@ export default function SettingsPage() {
     <div>
       <MobileHeader title="Settings" />
 
-      <div className="mb-6 hidden md:block">
-        <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
-        <p className="text-sm text-[var(--muted)]">
-          Profile, preferences, and backups.
-        </p>
-      </div>
-
-      <div className="space-y-4 max-w-xl">
-        <GlassCard>
-          <h2 className="mb-3 font-semibold">Profile</h2>
-          <Label htmlFor="display-name">Display name</Label>
-          <Input
-            id="display-name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            onBlur={() => {
-              if (name !== settings.displayName) saveName();
-            }}
-          />
-          <p className="mt-2 text-sm text-[var(--muted)]">{user?.email}</p>
-          <Button className="mt-3" onClick={saveName}>
-            Save name
-          </Button>
-        </GlassCard>
-
-        <GlassCard>
-          <h2 className="mb-3 font-semibold">Appearance</h2>
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="font-medium">Theme</p>
-              <p className="text-sm text-[var(--muted)]">
-                Light, dark, or system
-              </p>
-            </div>
-            <ThemeToggle />
-          </div>
-          <div className="mt-4">
-            <Label htmlFor="week-start">Week starts on</Label>
-            <select
-              id="week-start"
-              className="w-full min-h-11 rounded-2xl border border-[var(--glass-border)] bg-white/70 dark:bg-white/5 px-3 focus-ring"
-              value={settings.weekStart}
-              onChange={(e) => {
-                const weekStart = Number(e.target.value) as WeekStart;
-                updateSettings({ weekStart });
-                toast({ title: "Week start updated" });
-              }}
-            >
-              <option value={1}>Monday</option>
-              <option value={0}>Sunday</option>
-            </select>
-          </div>
-        </GlassCard>
-
-        <GlassCard>
-          <h2 className="mb-1 font-semibold">Backup</h2>
-          <p className="mb-3 text-sm text-[var(--muted)]">
-            Export or import your data as JSON. This is your backup mechanism.
+      <div className="px-4 md:px-0">
+        <div className="mb-6 hidden md:block">
+          <h1 className="text-2xl font-bold tracking-tight text-on-surface">Settings</h1>
+          <p className="text-sm text-on-surface-variant">
+            Profile, preferences, and backups.
           </p>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="secondary" onClick={onExport}>
-              <Download className="h-4 w-4" /> Export JSON
-            </Button>
-            <Button
-              variant="secondary"
-              loading={busy}
-              onClick={() => fileRef.current?.click()}
-            >
-              <Upload className="h-4 w-4" /> Import JSON
-            </Button>
-            <input
-              ref={fileRef}
-              type="file"
-              accept="application/json,.json"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) void onImportFile(file);
-                e.target.value = "";
+        </div>
+
+        <div className="space-y-4 max-w-xl">
+          <GlassCard className="rounded-2xl">
+            <h2 className="mb-3 font-bold text-on-surface">Profile</h2>
+            <Label htmlFor="display-name">Display name</Label>
+            <Input
+              id="display-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onBlur={() => {
+                if (name !== settings.displayName) saveName();
               }}
             />
-          </div>
-        </GlassCard>
+            <p className="mt-2 text-sm text-on-surface-variant">{user?.email}</p>
+            <Button className="mt-3" onClick={saveName}>
+              Save name
+            </Button>
+          </GlassCard>
 
-        <GlassCard>
-          <h2 className="mb-3 font-semibold">Account</h2>
-          <Button
-            variant="secondary"
-            className="w-full justify-start"
-            onClick={() => void signOut()}
-          >
-            <LogOut className="h-4 w-4" /> Sign out
-          </Button>
-          <Button
-            variant="danger"
-            className="mt-2 w-full justify-start"
-            onClick={() => setConfirmDelete(true)}
-          >
-            <Trash2 className="h-4 w-4" /> Delete my data
-          </Button>
-        </GlassCard>
+          <GlassCard className="rounded-2xl">
+            <h2 className="mb-3 font-bold text-on-surface">Appearance</h2>
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="font-medium text-on-surface">Theme</p>
+                <p className="text-sm text-on-surface-variant">
+                  Light, dark, or system
+                </p>
+              </div>
+              <ThemeToggle />
+            </div>
+            <div className="mt-4">
+              <Label htmlFor="week-start">Week starts on</Label>
+              <select
+                id="week-start"
+                className="w-full min-h-11 rounded-xl bg-surface-container-low px-3 focus-ring border-0"
+                value={settings.weekStart}
+                onChange={(e) => {
+                  const weekStart = Number(e.target.value) as WeekStart;
+                  updateSettings({ weekStart });
+                  toast({ title: "Week start updated" });
+                }}
+              >
+                <option value={1}>Monday</option>
+                <option value={0}>Sunday</option>
+              </select>
+            </div>
+          </GlassCard>
+
+          <GlassCard className="rounded-2xl">
+            <h2 className="mb-1 font-bold text-on-surface">Backup</h2>
+            <p className="mb-3 text-sm text-on-surface-variant">
+              Export or import your data as JSON. This is your backup mechanism.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="secondary" onClick={onExport}>
+                <Download className="h-4 w-4" /> Export JSON
+              </Button>
+              <Button
+                variant="secondary"
+                loading={busy}
+                onClick={() => fileRef.current?.click()}
+              >
+                <Upload className="h-4 w-4" /> Import JSON
+              </Button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="application/json,.json"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) void onImportFile(file);
+                  e.target.value = "";
+                }}
+              />
+            </div>
+          </GlassCard>
+
+          <GlassCard className="rounded-2xl">
+            <h2 className="mb-3 font-bold text-on-surface">Account</h2>
+            <Button
+              variant="secondary"
+              className="w-full justify-start"
+              onClick={() => void signOut()}
+            >
+              <LogOut className="h-4 w-4" /> Sign out
+            </Button>
+            <Button
+              variant="danger"
+              className="mt-2 w-full justify-start"
+              onClick={() => setConfirmDelete(true)}
+            >
+              <Trash2 className="h-4 w-4" /> Delete my data
+            </Button>
+          </GlassCard>
+        </div>
       </div>
 
       <ResponsiveDialog
@@ -201,8 +203,8 @@ export default function SettingsPage() {
         onClose={() => setConfirmDelete(false)}
         title="Delete all data?"
       >
-        <p className="text-sm text-[var(--muted)]">
-          This permanently deletes your Doyra tasks, habits, and logs from
+        <p className="text-sm text-on-surface-variant">
+          This permanently deletes your Doyrai tasks, habits, and logs from
           Firestore, then signs you out. Export a backup first if you might
           need it.
         </p>

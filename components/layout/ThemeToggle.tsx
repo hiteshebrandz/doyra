@@ -29,14 +29,15 @@ export function ThemeToggle({ compact = false }: { compact?: boolean }) {
   return (
     <Button
       variant="ghost"
-      size={compact ? "icon" : "md"}
+      size="icon"
       onClick={cycle}
       aria-label={`Theme: ${theme}. Click to change.`}
       title={`Theme: ${theme}`}
+      className="text-on-surface-variant"
     >
       <Icon className="h-5 w-5" />
       {!compact ? (
-        <span className="capitalize hidden lg:inline">{theme}</span>
+        <span className="capitalize hidden lg:inline text-sm">{theme}</span>
       ) : null}
     </Button>
   );

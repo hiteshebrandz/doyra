@@ -1,28 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { ToastProvider } from "@/components/ui/Toast";
 import "./globals.css";
 
-const inter = Inter({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-jakarta",
   display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Doyra — Plan it. Do it. Repeat.",
-    template: "%s · Doyra",
+    default: "Doyrai — Plan it. Do it. Repeat.",
+    template: "%s · Doyrai",
   },
   description:
-    "Doyra is a calm personal task & habit manager. Plan it. Do it. Repeat.",
-  applicationName: "Doyra",
+    "Doyrai is a calm personal task & habit manager. Plan it. Do it. Repeat.",
+  applicationName: "Doyrai",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Doyra",
+    title: "Doyrai",
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
@@ -33,8 +34,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F6F7FB" },
-    { media: "(prefers-color-scheme: dark)", color: "#0F1220" },
+    { media: "(prefers-color-scheme: light)", color: "#F8F9FF" },
+    { media: "(prefers-color-scheme: dark)", color: "#0B1424" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -48,8 +49,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full`} suppressHydrationWarning>
-      <body className="mesh-bg min-h-[100dvh] font-sans antialiased">
+    <html lang="en" className={`${jakarta.variable} h-full`} suppressHydrationWarning>
+      <body
+        className="mesh-bg min-h-[100dvh] font-sans antialiased text-on-surface bg-surface"
+        suppressHydrationWarning
+      >
         <ThemeProvider>
           <AuthProvider>
             <ToastProvider>{children}</ToastProvider>

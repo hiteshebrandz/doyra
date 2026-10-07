@@ -25,6 +25,16 @@ export function isMobileOrPwa(): boolean {
   return coarse || standalone || window.innerWidth < 768;
 }
 
+/** Prefer redirect only in installed PWA — popups work better in mobile browsers. */
+export function shouldUseAuthRedirect(): boolean {
+  if (typeof window === "undefined") return false;
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    ("standalone" in navigator &&
+      (navigator as Navigator & { standalone?: boolean }).standalone === true)
+  );
+}
+
 export function createId(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return crypto.randomUUID();

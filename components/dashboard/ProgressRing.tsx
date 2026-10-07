@@ -15,41 +15,47 @@ export function ProgressRing({
   const c = 2 * Math.PI * r;
   const pct = Math.max(0, Math.min(100, value));
   const offset = c - (pct / 100) * c;
+  const compact = size < 72;
 
   return (
-    <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div
+      className="relative inline-flex items-center justify-center drop-shadow-[0_0_8px_rgba(70,72,212,0.3)]"
+      style={{ width: size, height: size }}
+    >
       <svg width={size} height={size} className="-rotate-90" aria-hidden>
         <circle
           cx={size / 2}
           cy={size / 2}
           r={r}
           fill="none"
-          stroke="currentColor"
+          stroke="var(--surface-container-low)"
           strokeWidth={stroke}
-          className="text-black/10 dark:text-white/10"
         />
         <circle
           cx={size / 2}
           cy={size / 2}
           r={r}
           fill="none"
-          stroke="url(#ringGrad)"
+          stroke="var(--primary)"
           strokeWidth={stroke}
           strokeLinecap="round"
           strokeDasharray={c}
           strokeDashoffset={offset}
+          className="transition-all duration-700 ease-out"
         />
-        <defs>
-          <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#6366F1" />
-            <stop offset="100%" stopColor="#8B5CF6" />
-          </linearGradient>
-        </defs>
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-2xl font-bold tabular">{pct}%</span>
-        {label ? (
-          <span className="text-xs text-[var(--muted)]">{label}</span>
+        <span
+          className={
+            compact
+              ? "text-[0.6875rem] font-bold tabular text-primary"
+              : "text-2xl font-bold tabular text-on-surface"
+          }
+        >
+          {pct}%
+        </span>
+        {label && !compact ? (
+          <span className="text-xs text-on-surface-variant">{label}</span>
         ) : null}
       </div>
     </div>

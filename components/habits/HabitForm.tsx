@@ -42,7 +42,7 @@ export function HabitForm({
           <button
             key={p.name}
             type="button"
-            className="rounded-2xl glass px-3 py-2 text-sm font-semibold focus-ring"
+            className="rounded-xl bg-surface-container-low px-3 py-2 text-sm font-semibold focus-ring"
             onClick={() => {
               setName(p.name);
               setIcon(p.icon);
@@ -74,7 +74,9 @@ export function HabitForm({
               onClick={() => setIcon(e)}
               className={cn(
                 "flex h-11 w-11 items-center justify-center rounded-2xl text-xl focus-ring",
-                icon === e ? "bg-primary/15 ring-2 ring-primary" : "glass",
+                icon === e
+                  ? "bg-primary-fixed ring-2 ring-primary"
+                  : "bg-surface-container-low",
               )}
             >
               {e}
@@ -93,7 +95,7 @@ export function HabitForm({
               onClick={() => setColor(c)}
               className={cn(
                 "h-9 w-9 rounded-full focus-ring",
-                color === c && "ring-2 ring-offset-2 ring-[var(--text)]",
+                color === c && "ring-2 ring-offset-2 ring-on-surface",
               )}
               style={{ backgroundColor: c }}
             />

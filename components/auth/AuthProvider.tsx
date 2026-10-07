@@ -24,7 +24,7 @@ import {
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { mapAuthError } from "@/lib/auth-errors";
-import { isMobileOrPwa } from "@/lib/utils";
+import { shouldUseAuthRedirect } from "@/lib/utils";
 import { useAppStore } from "@/store/app-store";
 
 type AuthContextValue = {
@@ -99,7 +99,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signInWithGoogle = useCallback(async () => {
     const provider = new GoogleAuthProvider();
     try {
-      if (isMobileOrPwa()) {
+      // Popup in browser (incl. mobile Safari/Chrome); redirect only for installed PWA
+      if (shouldUseAuthRedirect()) {
         await signInWithRedirect(auth, provider);
       } else {
         await signInWithPopup(auth, provider);
@@ -109,6 +110,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         e && typeof e === "object" && "code" in e
           ? String((e as { code: string }).code)
           : "";
+      // If popup is blocked, fall back to redirect once
+      if (
+        code === "auth/popup-blocked" ||
+        code === "auth/popup-closed-by-user"
+      ) {
+        if (code === "auth/popup-blocked") {
+          await signInWithRedirect(auth, provider);
+          return;
+        }
+      }
       throw new Error(mapAuthError(code));
     }
   }, []);

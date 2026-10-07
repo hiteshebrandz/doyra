@@ -24,9 +24,7 @@ export default function SignupPage() {
     setLoading(true);
     try {
       await signUp(email.trim(), password, name);
-      // Display name will also land in settings once hydrated
       if (name.trim()) {
-        // slight delay so hydrate can run first
         setTimeout(() => updateSettings({ displayName: name.trim() }), 800);
       }
     } catch (err) {
@@ -49,9 +47,11 @@ export default function SignupPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight">Create your account</h1>
-      <p className="mt-1 text-sm text-[var(--muted)]">
-        Start planning habits and tasks with Doyra.
+      <h1 className="text-2xl font-bold tracking-tight text-on-surface">
+        Create your account
+      </h1>
+      <p className="mt-1 text-sm text-on-surface-variant">
+        Start planning habits and tasks with Doyrai.
       </p>
 
       <form onSubmit={onSubmit} className="mt-6 space-y-4">
@@ -90,7 +90,7 @@ export default function SignupPage() {
           />
         </div>
         {error ? (
-          <p className="text-sm text-danger" role="alert">
+          <p className="text-sm text-error" role="alert">
             {error}
           </p>
         ) : null}
@@ -99,15 +99,15 @@ export default function SignupPage() {
         </Button>
       </form>
 
-      <div className="my-5 flex items-center gap-3 text-xs text-[var(--muted)]">
-        <span className="h-px flex-1 bg-[var(--glass-border)]" />
+      <div className="my-5 flex items-center gap-3 text-xs text-on-surface-variant">
+        <span className="h-px flex-1 bg-outline-variant/50" />
         or
-        <span className="h-px flex-1 bg-[var(--glass-border)]" />
+        <span className="h-px flex-1 bg-outline-variant/50" />
       </div>
 
       <GoogleButton onClick={() => void onGoogle()} loading={googleLoading} />
 
-      <p className="mt-6 text-center text-sm text-[var(--muted)]">
+      <p className="mt-6 text-center text-sm text-on-surface-variant">
         Already have an account?{" "}
         <Link href="/login" className="font-semibold text-primary focus-ring rounded">
           Sign in

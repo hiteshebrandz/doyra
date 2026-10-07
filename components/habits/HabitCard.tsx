@@ -5,7 +5,6 @@ import { Check } from "lucide-react";
 import { cn, vibrate } from "@/lib/utils";
 import { useHabitStats } from "@/hooks/useHabits";
 import type { Habit } from "@/lib/types";
-import { GlassCard } from "@/components/ui/GlassCard";
 
 const WEEK_LABELS_MON = ["M", "T", "W", "T", "F", "S", "S"];
 const WEEK_LABELS_SUN = ["S", "M", "T", "W", "T", "F", "S"];
@@ -27,33 +26,43 @@ export function HabitCard({
   const labels = weekStart === 1 ? WEEK_LABELS_MON : WEEK_LABELS_SUN;
 
   return (
-    <GlassCard className="space-y-3">
-      <div className="flex items-start gap-3">
-        <button
-          type="button"
-          onClick={onEdit}
-          className="flex h-12 w-12 items-center justify-center rounded-2xl text-2xl focus-ring"
-          style={{ backgroundColor: `${habit.color}22` }}
-          aria-label={`Edit ${habit.name}`}
-        >
-          {habit.icon}
-        </button>
-        <div className="min-w-0 flex-1">
+    <div className="relative overflow-hidden rounded-xl bg-surface-container-lowest p-4 shadow-sm hover:shadow-md transition-all">
+      <div className="flex items-center justify-between">
+        <div className="flex items-start gap-3 min-w-0">
           <button
             type="button"
             onClick={onEdit}
-            className="text-left focus-ring rounded-lg"
+            className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl text-2xl shadow-sm focus-ring"
+            style={{ backgroundColor: `${habit.color}22` }}
+            aria-label={`Edit ${habit.name}`}
           >
-            <h3 className="font-semibold">{habit.name}</h3>
+            {habit.icon}
           </button>
-          <p className="text-sm text-[var(--muted)]">
-            Streak <span className="tabular font-semibold text-[var(--text)]">{stats.current}</span>
-            {" · "}
-            Best <span className="tabular">{stats.best}</span>
-          </p>
-          <p className="text-xs text-[var(--muted)]">
-            Week {stats.weekPct}% · Month {stats.monthPct}%
-          </p>
+          <div className="flex flex-col min-w-0">
+            <button
+              type="button"
+              onClick={onEdit}
+              className="text-left focus-ring rounded-lg"
+            >
+              <span
+                className={cn(
+                  "font-semibold text-on-surface truncate block",
+                  stats.checked && "line-through opacity-70",
+                )}
+              >
+                {habit.name}
+              </span>
+            </button>
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className="text-[0.6875rem] font-semibold text-primary">
+                {stats.current} days 🔥
+              </span>
+              <span className="text-outline-variant text-[0.6875rem]">•</span>
+              <span className="text-[0.6875rem] text-on-surface-variant">
+                {stats.monthPct}% monthly
+              </span>
+            </div>
+          </div>
         </div>
         <motion.button
           type="button"
@@ -63,43 +72,44 @@ export function HabitCard({
             vibrate(10);
             onToggle();
           }}
-          whileTap={{ scale: 0.9 }}
+          whileTap={{ scale: 0.95 }}
           className={cn(
-            "flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 focus-ring transition",
+            "relative flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full transition-transform focus-ring",
             stats.checked
-              ? "border-transparent text-white"
-              : "border-[var(--glass-border)] bg-white/40 dark:bg-white/5",
+              ? "bg-primary text-on-primary shadow-md shadow-primary/30"
+              : "bg-surface-container text-on-surface-variant",
           )}
-          style={
-            stats.checked
-              ? { backgroundColor: habit.color, borderColor: habit.color }
-              : undefined
-          }
         >
-          <motion.span
-            key={stats.checked ? "on" : "off"}
-            initial={{ scale: 0.6, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-          >
-            {stats.checked ? <Check className="h-7 w-7" /> : null}
-          </motion.span>
+          {stats.checked ? <Check className="h-[22px] w-[22px]" /> : null}
         </motion.button>
       </div>
 
-      <div className="grid grid-cols-7 gap-1.5">
+      <div className="mt-3 flex items-center gap-1.5 pt-2">
+        <div className="h-1.5 flex-1 rounded-full bg-surface-container-highest overflow-hidden">
+          <div
+            className="h-full rounded-full bg-primary transition-all"
+            style={{ width: `${stats.monthPct}%` }}
+          />
+        </div>
+        <span className="text-[0.6875rem] text-on-surface-variant">{stats.monthPct}%</span>
+      </div>
+
+      <div className="mt-3 grid grid-cols-7 gap-1.5">
         {stats.weekKeys.map((key, i) => {
           const on = !!stats.doneByDay[key];
           const isSelected = key === dateKey;
           return (
             <div key={key} className="text-center">
-              <span className="mb-1 block text-[10px] font-semibold text-[var(--muted)]">
+              <span className="mb-1 block text-[10px] font-semibold text-on-surface-variant">
                 {labels[i]}
               </span>
               <div
                 className={cn(
                   "mx-auto flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold",
-                  on ? "text-white" : "bg-black/5 dark:bg-white/10 text-[var(--muted)]",
-                  isSelected && "ring-2 ring-primary ring-offset-1 ring-offset-transparent",
+                  on
+                    ? "text-white"
+                    : "bg-surface-container text-on-surface-variant",
+                  isSelected && "ring-2 ring-primary ring-offset-1 ring-offset-surface",
                 )}
                 style={on ? { backgroundColor: habit.color } : undefined}
                 aria-label={`${key}${on ? " done" : ""}`}
@@ -110,6 +120,6 @@ export function HabitCard({
           );
         })}
       </div>
-    </GlassCard>
+    </div>
   );
 }

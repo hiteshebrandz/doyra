@@ -29,13 +29,15 @@ export default function ForgotPasswordPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight">Reset password</h1>
-      <p className="mt-1 text-sm text-[var(--muted)]">
+      <h1 className="text-2xl font-bold tracking-tight text-on-surface">
+        Reset password
+      </h1>
+      <p className="mt-1 text-sm text-on-surface-variant">
         We&apos;ll email you a link to reset your password.
       </p>
 
       {done ? (
-        <div className="mt-6 rounded-2xl bg-success/10 p-4 text-sm text-success">
+        <div className="mt-6 rounded-xl bg-tertiary-fixed/30 p-4 text-sm text-tertiary">
           Check your inbox for a reset link.{" "}
           <Link href="/login" className="font-semibold underline">
             Back to sign in
@@ -55,7 +57,7 @@ export default function ForgotPasswordPage() {
             />
           </div>
           {error ? (
-            <p className="text-sm text-danger" role="alert">
+            <p className="text-sm text-error" role="alert">
               {error}
             </p>
           ) : null}
@@ -65,7 +67,7 @@ export default function ForgotPasswordPage() {
         </form>
       )}
 
-      <p className="mt-6 text-center text-sm text-[var(--muted)]">
+      <p className="mt-6 text-center text-sm text-on-surface-variant">
         <Link href="/login" className="font-semibold text-primary focus-ring rounded">
           Back to sign in
         </Link>

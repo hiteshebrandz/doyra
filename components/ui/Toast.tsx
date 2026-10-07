@@ -62,18 +62,18 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={reduce ? undefined : { opacity: 0, y: 8 }}
               className={cn(
-                "pointer-events-auto glass flex w-full max-w-sm items-start gap-3 rounded-2xl p-3.5",
+                "pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-full bg-inverse-surface text-inverse-on-surface px-4 py-3 shadow-[var(--shadow-float)]",
               )}
             >
               <div className="min-w-0 flex-1">
                 <p className="font-semibold text-sm">{item.title}</p>
                 {item.description ? (
-                  <p className="text-sm text-[var(--muted)]">{item.description}</p>
+                  <p className="text-sm opacity-80">{item.description}</p>
                 ) : null}
                 {item.actionLabel && item.onAction ? (
                   <button
                     type="button"
-                    className="mt-1 text-sm font-semibold text-primary focus-ring rounded-lg"
+                    className="mt-1 text-sm font-semibold text-primary-fixed focus-ring rounded-lg"
                     onClick={() => {
                       item.onAction?.();
                       dismiss(item.id);
@@ -86,7 +86,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               <button
                 type="button"
                 aria-label="Dismiss"
-                className="rounded-lg p-1 text-[var(--muted)] hover:bg-black/5 dark:hover:bg-white/10 focus-ring"
+                className="rounded-full p-1 opacity-70 hover:opacity-100 focus-ring"
                 onClick={() => dismiss(item.id)}
               >
                 <X className="h-4 w-4" />

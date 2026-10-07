@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import type { HTMLAttributes } from "react";
 
+/** Elevated white card matching Calm Flow Level 1 surfaces. */
 export function GlassCard({
   className,
   children,
@@ -10,9 +11,8 @@ export function GlassCard({
   return (
     <div
       className={cn(
-        "glass rounded-3xl p-4 md:p-5",
-        hover &&
-          "transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg",
+        "card-surface rounded-2xl p-4 md:p-5",
+        hover && "card-surface-hover active:scale-[0.98]",
         className,
       )}
       {...props}
@@ -21,3 +21,5 @@ export function GlassCard({
     </div>
   );
 }
+
+export const Card = GlassCard;

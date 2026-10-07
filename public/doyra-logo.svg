@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 48" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
   <defs>
     <linearGradient id="g" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#6366F1"/>
-      <stop offset="1" stop-color="#8B5CF6"/>
+      <stop stop-color="#4648D4"/>
+      <stop offset="1" stop-color="#6B38D4"/>
     </linearGradient>
   </defs>
   <rect x="4" y="4" width="40" height="40" rx="12" stroke="url(#g)" stroke-width="3"/>
   <path d="M16 24.5l5.5 5.5L33 18" stroke="url(#g)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="58" y="32" font-family="Inter, system-ui, sans-serif" font-size="26" font-weight="700" fill="#1F2937" letter-spacing="-0.5">doyra</text>
+  <text x="58" y="32" font-family="Plus Jakarta Sans, system-ui, sans-serif" font-size="26" font-weight="700" fill="#0B1C30" letter-spacing="-0.5">doyrai</text>
 </svg>

@@ -10,7 +10,8 @@ export const Input = forwardRef<
   <input
     ref={ref}
     className={cn(
-      "w-full min-h-11 rounded-2xl border border-[var(--glass-border)] bg-white/70 dark:bg-white/5 px-4 py-2.5 text-[16px] text-[var(--text)] placeholder:text-[var(--muted)] focus-ring outline-none",
+      "w-full min-h-11 rounded-xl border border-transparent bg-surface-container-low px-4 py-2.5 text-[16px] text-on-surface placeholder:text-outline-variant outline-none transition-all",
+      "focus:bg-surface-container-lowest focus:shadow-[0_0_0_3px_var(--ring)]",
       className,
     )}
     {...props}
@@ -25,7 +26,8 @@ export const Textarea = forwardRef<
   <textarea
     ref={ref}
     className={cn(
-      "w-full min-h-[96px] rounded-2xl border border-[var(--glass-border)] bg-white/70 dark:bg-white/5 px-4 py-3 text-[16px] text-[var(--text)] placeholder:text-[var(--muted)] focus-ring outline-none resize-y",
+      "w-full min-h-[96px] rounded-xl border border-transparent bg-surface-container-low px-4 py-3 text-[16px] text-on-surface placeholder:text-outline-variant outline-none resize-y transition-all",
+      "focus:bg-surface-container-lowest focus:shadow-[0_0_0_3px_var(--ring)]",
       className,
     )}
     {...props}
@@ -46,7 +48,7 @@ export function Label({
     <label
       htmlFor={htmlFor}
       className={cn(
-        "mb-1.5 block text-sm font-medium text-[var(--muted)]",
+        "mb-1.5 block text-sm font-semibold text-on-surface",
         className,
       )}
     >

@@ -2,13 +2,13 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Doyra",
-    short_name: "Doyra",
+    name: "Doyrai",
+    short_name: "Doyrai",
     description: "Plan it. Do it. Repeat.",
     start_url: "/dashboard",
     display: "standalone",
-    background_color: "#F6F7FB",
-    theme_color: "#6366F1",
+    background_color: "#F8F9FF",
+    theme_color: "#4648D4",
     orientation: "portrait-primary",
     icons: [
       {

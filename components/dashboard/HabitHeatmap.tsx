@@ -34,8 +34,8 @@ export function HabitHeatmap({
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
-        <h3 className="font-semibold">Monthly heatmap</h3>
-        <span className="text-xs text-[var(--muted)]">{month}</span>
+        <h3 className="font-bold text-on-surface">Monthly heatmap</h3>
+        <span className="text-xs text-on-surface-variant">{month}</span>
       </div>
       <div
         className="grid grid-cols-7 gap-1.5 sm:grid-cols-10 md:grid-cols-11"
@@ -53,22 +53,22 @@ export function HabitHeatmap({
             style={{
               backgroundColor:
                 c.ratio === 0
-                  ? "rgba(0,0,0,0.06)"
-                  : `rgba(99, 102, 241, ${0.2 + c.ratio * 0.8})`,
+                  ? "var(--surface-container)"
+                  : `rgba(70, 72, 212, ${0.2 + c.ratio * 0.8})`,
             }}
           />
         ))}
       </div>
-      <div className="mt-2 flex items-center gap-2 text-xs text-[var(--muted)]">
+      <div className="mt-2 flex items-center gap-2 text-xs text-on-surface-variant">
         <span>Less</span>
-        <span className="h-3 w-3 rounded-sm bg-black/10 dark:bg-white/10" />
+        <span className="h-3 w-3 rounded-sm bg-surface-container" />
         <span
           className="h-3 w-3 rounded-sm"
-          style={{ backgroundColor: "rgba(99,102,241,0.4)" }}
+          style={{ backgroundColor: "rgba(70,72,212,0.4)" }}
         />
         <span
           className="h-3 w-3 rounded-sm"
-          style={{ backgroundColor: "rgba(99,102,241,0.85)" }}
+          style={{ backgroundColor: "rgba(70,72,212,0.85)" }}
         />
         <span>More</span>
       </div>

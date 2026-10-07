@@ -1,23 +1,22 @@
 import Link from "next/link";
-import Image from "next/image";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { CheckCircle2, Flame, LayoutDashboard, Smartphone } from "lucide-react";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-[100dvh]">
+    <div className="min-h-[100dvh] bg-surface text-on-surface">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 md:px-6">
         <BrandLogo size="md" />
         <div className="flex items-center gap-2">
           <Link
             href="/login"
-            className="rounded-2xl px-4 py-2.5 text-sm font-semibold text-[var(--muted)] hover:text-[var(--text)] focus-ring"
+            className="rounded-xl px-4 py-2.5 text-sm font-semibold text-on-surface-variant hover:text-on-surface focus-ring"
           >
             Sign in
           </Link>
           <Link
             href="/signup"
-            className="rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm focus-ring"
+            className="rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-on-primary shadow-sm focus-ring"
           >
             Get started
           </Link>
@@ -29,56 +28,55 @@ export default function LandingPage() {
           <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-primary">
             Personal task & habit manager
           </p>
-          <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Doyra
-            </span>
+          <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl text-on-surface">
+            Doyrai
           </h1>
-          <p className="mt-3 text-xl font-medium text-[var(--text)] md:text-2xl">
+          <p className="mt-3 text-xl font-medium text-on-surface md:text-2xl">
             Plan it. Do it. Repeat.
           </p>
-          <p className="mt-4 max-w-md text-[var(--muted)]">
-            A calm glass workspace for daily tasks and lasting habits — built to
-            feel native on your phone and polished on your desktop.
+          <p className="mt-4 max-w-md text-on-surface-variant">
+            A calm productivity workspace for daily tasks and lasting habits —
+            native on your phone, polished on desktop.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/signup"
-              className="inline-flex min-h-12 items-center rounded-2xl bg-primary px-6 text-base font-semibold text-white shadow-md focus-ring"
+              className="inline-flex min-h-12 items-center rounded-xl bg-primary px-6 text-base font-semibold text-on-primary shadow-[0_8px_24px_rgba(70,72,212,0.35)] focus-ring"
             >
               Start free
             </Link>
             <Link
               href="/login"
-              className="inline-flex min-h-12 items-center rounded-2xl glass px-6 text-base font-semibold focus-ring"
+              className="inline-flex min-h-12 items-center rounded-xl bg-surface-container-lowest px-6 text-base font-semibold shadow-sm focus-ring"
             >
               I have an account
             </Link>
           </div>
         </div>
 
-        <div className="relative min-h-[320px] overflow-hidden rounded-[2rem] border border-[var(--glass-border)] glass p-4 md:min-h-[420px]">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20" />
+        <div className="relative min-h-[320px] overflow-hidden rounded-[1.5rem] bg-surface-container-lowest p-4 shadow-[var(--shadow-float)] md:min-h-[420px]">
+          <div className="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-primary-fixed/60 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-10 -left-10 w-36 h-36 rounded-full bg-secondary-fixed/50 blur-2xl pointer-events-none" />
           <div className="relative space-y-3">
-            <div className="glass rounded-2xl p-4">
-              <p className="text-sm text-[var(--muted)]">Today</p>
+            <div className="rounded-2xl bg-surface-container-low p-4">
+              <p className="text-sm text-on-surface-variant">Today</p>
               <p className="text-2xl font-bold tabular">4 tasks · 3 habits</p>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <div className="glass rounded-2xl p-4">
+              <div className="rounded-2xl bg-surface-container-lowest p-4 shadow-sm">
                 <p className="text-3xl">💪</p>
                 <p className="mt-2 font-semibold">Gym</p>
-                <p className="text-sm text-success">Streak 12</p>
+                <p className="text-sm text-tertiary font-semibold">Streak 12</p>
               </div>
-              <div className="glass rounded-2xl p-4">
+              <div className="rounded-2xl bg-surface-container-lowest p-4 shadow-sm">
                 <p className="text-3xl">📚</p>
                 <p className="mt-2 font-semibold">Reading</p>
-                <p className="text-sm text-success">Streak 7</p>
+                <p className="text-sm text-secondary font-semibold">Streak 7</p>
               </div>
             </div>
-            <div className="glass rounded-2xl p-4 opacity-90">
+            <div className="rounded-2xl bg-surface-container-low p-4">
               <div className="flex items-center gap-3">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-success text-white text-xs">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-tertiary text-on-tertiary text-xs">
                   ✓
                 </span>
                 <span className="line-through opacity-60">Ship landing page</span>
@@ -92,21 +90,20 @@ export default function LandingPage() {
         <h2 className="text-center text-3xl font-bold tracking-tight">
           Everything you need to stay consistent
         </h2>
-        <p className="mx-auto mt-2 max-w-xl text-center text-[var(--muted)]">
-          Tasks, habits, streaks, and a dashboard that respects your attention —
-          and your Firebase free tier.
+        <p className="mx-auto mt-2 max-w-xl text-center text-on-surface-variant">
+          Tasks, habits, streaks, and a dashboard that respects your attention.
         </p>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             {
-              icon: <CheckSquareIcon />,
+              icon: <CheckCircle2 className="h-6 w-6" />,
               title: "Smart tasks",
               body: "Daily, weekly, and monthly views with priorities and swipe gestures.",
             },
             {
               icon: <Flame className="h-6 w-6" />,
               title: "Habit streaks",
-              body: "One-tap check-ins, weekly grids, and streaks that end today or yesterday.",
+              body: "One-tap check-ins, weekly grids, and streaks that stick.",
             },
             {
               icon: <LayoutDashboard className="h-6 w-6" />,
@@ -116,78 +113,44 @@ export default function LandingPage() {
             {
               icon: <Smartphone className="h-6 w-6" />,
               title: "Installable PWA",
-              body: "Standalone display, safe-area aware, and offline-friendly cache.",
+              body: "Standalone display, safe-area aware, and offline-friendly.",
             },
           ].map((f) => (
-            <div key={f.title} className="glass rounded-3xl p-5">
-              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <div
+              key={f.title}
+              className="rounded-2xl bg-surface-container-lowest p-5 shadow-[var(--shadow-card)]"
+            >
+              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-primary-fixed text-primary">
                 {f.icon}
               </div>
               <h3 className="font-semibold">{f.title}</h3>
-              <p className="mt-1 text-sm text-[var(--muted)]">{f.body}</p>
+              <p className="mt-1 text-sm text-on-surface-variant">{f.body}</p>
             </div>
           ))}
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12 md:px-6">
-        <h2 className="text-center text-3xl font-bold tracking-tight">
-          Designed for every screen
-        </h2>
-        <p className="mx-auto mt-2 max-w-xl text-center text-[var(--muted)]">
-          Floating glass tab bar on phones. Sidebar dashboard on desktop.
-        </p>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {["Mobile-first tabs", "Tablet icon rail", "Desktop sidebar"].map(
-            (label, i) => (
-              <div
-                key={label}
-                className="glass flex aspect-[4/3] flex-col items-center justify-center rounded-3xl p-6 text-center"
-              >
-                <Image
-                  src="/doyra-mark.svg"
-                  alt=""
-                  width={48}
-                  height={48}
-                  className="mb-3 opacity-80"
-                />
-                <p className="font-semibold">{label}</p>
-                <p className="mt-1 text-sm text-[var(--muted)]">
-                  Preview {i + 1}
-                </p>
-              </div>
-            ),
-          )}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-4 py-16 md:px-6">
-        <div className="glass rounded-[2rem] px-6 py-12 text-center md:px-12">
-          <h2 className="text-3xl font-bold tracking-tight">
-            Ready when you are
-          </h2>
-          <p className="mx-auto mt-2 max-w-md text-[var(--muted)]">
+        <div className="rounded-[1.5rem] bg-surface-container-lowest px-6 py-12 text-center shadow-[var(--shadow-card)] md:px-12">
+          <h2 className="text-3xl font-bold tracking-tight">Ready when you are</h2>
+          <p className="mx-auto mt-2 max-w-md text-on-surface-variant">
             Create a free account and start your first streak today.
           </p>
           <Link
             href="/signup"
-            className="mt-6 inline-flex min-h-12 items-center rounded-2xl bg-primary px-8 text-base font-semibold text-white focus-ring"
+            className="mt-6 inline-flex min-h-12 items-center rounded-xl bg-primary px-8 text-base font-semibold text-on-primary focus-ring"
           >
             Create account
           </Link>
         </div>
       </section>
 
-      <footer className="border-t border-[var(--glass-border)] px-4 py-8 text-center text-sm text-[var(--muted)] md:px-6">
+      <footer className="border-t border-outline-variant/30 px-4 py-8 text-center text-sm text-on-surface-variant md:px-6">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 md:flex-row">
           <BrandLogo size="sm" />
-          <p>© {new Date().getFullYear()} Doyra. Plan it. Do it. Repeat.</p>
+          <p>© {new Date().getFullYear()} Doyrai. Plan it. Do it. Repeat.</p>
         </div>
       </footer>
     </div>
   );
-}
-
-function CheckSquareIcon() {
-  return <CheckCircle2 className="h-6 w-6" />;
 }

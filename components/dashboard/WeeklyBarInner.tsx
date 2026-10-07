@@ -22,24 +22,23 @@ export default function WeeklyBarInner({
             dataKey="label"
             tickLine={false}
             axisLine={false}
-            tick={{ fill: "var(--muted)", fontSize: 12 }}
+            tick={{ fill: "var(--on-surface-variant)", fontSize: 12 }}
           />
           <YAxis
             allowDecimals={false}
             tickLine={false}
             axisLine={false}
-            tick={{ fill: "var(--muted)", fontSize: 12 }}
+            tick={{ fill: "var(--on-surface-variant)", fontSize: 12 }}
           />
           <Tooltip
-            cursor={{ fill: "rgba(99,102,241,0.08)" }}
+            cursor={{ fill: "rgba(70,72,212,0.08)" }}
             contentStyle={{
               borderRadius: 12,
-              border: "1px solid var(--glass-border)",
-              background: "var(--glass)",
-              backdropFilter: "blur(12px)",
+              border: "1px solid var(--card-border)",
+              background: "var(--surface-container-lowest)",
             }}
           />
-          <Bar dataKey="value" fill="#6366F1" radius={[8, 8, 4, 4]} />
+          <Bar dataKey="value" fill="#4648D4" radius={[8, 8, 4, 4]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

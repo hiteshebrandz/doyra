@@ -48,7 +48,7 @@ export function Sheet({ open, onClose, title, children, className }: SheetProps)
             aria-modal
             aria-label={title}
             className={cn(
-              "absolute inset-x-0 bottom-0 max-h-[92dvh] overflow-auto rounded-t-3xl glass p-4 pb-[calc(16px+var(--safe-bottom))]",
+              "absolute inset-x-0 bottom-0 max-h-[92dvh] overflow-auto rounded-t-[20px] bg-surface-container-lowest shadow-[var(--shadow-float)] p-4 pb-[calc(16px+var(--safe-bottom))]",
               className,
             )}
             initial={reduce ? false : { y: "100%" }}
@@ -60,14 +60,14 @@ export function Sheet({ open, onClose, title, children, className }: SheetProps)
             dragElastic={{ top: 0, bottom: 0.4 }}
             onDragEnd={onDragEnd}
           >
-            <div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-black/15 dark:bg-white/20" />
+            <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-outline-variant/60" />
             {title ? (
               <div className="mb-3 flex items-center justify-between">
-                <h2 className="text-lg font-semibold">{title}</h2>
+                <h2 className="text-lg font-bold tracking-tight text-on-surface">{title}</h2>
                 <button
                   type="button"
                   aria-label="Close"
-                  className="rounded-xl p-2 hover:bg-black/5 dark:hover:bg-white/10 focus-ring"
+                  className="rounded-full p-2 bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high focus-ring"
                   onClick={onClose}
                 >
                   <X className="h-5 w-5" />
@@ -121,7 +121,7 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
             aria-modal
             aria-label={title}
             className={cn(
-              "relative w-full max-w-lg glass rounded-3xl p-6",
+              "relative w-full max-w-lg bg-surface-container-lowest rounded-2xl p-6 shadow-[var(--shadow-float)]",
               className,
             )}
             initial={reduce ? false : { opacity: 0, scale: 0.96, y: 8 }}
@@ -130,11 +130,11 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
           >
             {title ? (
               <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-xl font-semibold">{title}</h2>
+                <h2 className="text-xl font-bold tracking-tight text-on-surface">{title}</h2>
                 <button
                   type="button"
                   aria-label="Close"
-                  className="rounded-xl p-2 hover:bg-black/5 dark:hover:bg-white/10 focus-ring"
+                  className="rounded-full p-2 bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high focus-ring"
                   onClick={onClose}
                 >
                   <X className="h-5 w-5" />
