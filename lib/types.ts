@@ -2,6 +2,56 @@ export type ThemePreference = "light" | "dark" | "system";
 export type WeekStart = 0 | 1; // 0 = Sunday, 1 = Monday
 export type TaskType = "daily" | "weekly" | "monthly";
 export type TaskPriority = "low" | "medium" | "high";
+export type GymExperience = "new" | "returning" | "experienced";
+export type GymGoal = "strength" | "muscle" | "fitness" | "fat-loss" | "mobility";
+export type GymExerciseType = "strength" | "cardio" | "mobility";
+
+export type GymSet = {
+  id: string;
+  reps: number | null;
+  weight: number | null;
+  durationMinutes: number | null;
+  distanceKm: number | null;
+  completed: boolean;
+};
+
+export type GymExercise = {
+  id: string;
+  name: string;
+  type: GymExerciseType;
+  muscleGroup: string;
+  notes: string;
+  sets: GymSet[];
+};
+
+export type GymDay = {
+  id: string;
+  dayOfWeek: number;
+  name: string;
+  focus: string;
+  rest: boolean;
+  exercises: GymExercise[];
+};
+
+export type GymPlan = {
+  id: string;
+  name: string;
+  goal: GymGoal;
+  experience: GymExperience;
+  daysPerWeek: number;
+  sessionMinutes: number;
+  equipment: string[];
+  limitations: string;
+  days: GymDay[];
+  generatedAt: string | null;
+  updatedAt: string;
+};
+
+export type GymLog = {
+  completedAt: string | null;
+  notes: string;
+  difficulty: number | null;
+};
 
 export type UserSettings = {
   theme: ThemePreference;
@@ -52,6 +102,7 @@ export type ExportPayload = {
   tasks: Record<string, Task>;
   logs: Record<string, MonthLogDoc["days"]>;
   archives: Record<string, Record<string, Task>>;
+  gym?: { plan: GymPlan | null; logs: Record<string, GymLog> };
 };
 
 export const DEFAULT_SETTINGS: UserSettings = {

@@ -5,6 +5,7 @@ import {
   flushPatches,
   loadInitialData,
   loadMonthLog,
+  loadGymMonth,
   type PendingPatch,
   importData as dbImportData,
   deleteAllUserData,
@@ -22,6 +23,8 @@ import type {
   TaskPriority,
   TaskType,
   UserSettings,
+  GymLog,
+  GymPlan,
 } from "@/lib/types";
 import { DEFAULT_SETTINGS } from "@/lib/types";
 
@@ -37,6 +40,9 @@ type AppState = {
   habits: Habit[];
   tasks: Record<string, Task>;
   logs: LogMonths;
+  gymPlan: GymPlan | null;
+  gymLogs: Record<string, GymLog>;
+  gymLoadedMonths: Record<string, boolean>;
   pending: PendingPatch;
   flushTimer: ReturnType<typeof setTimeout> | null;
 
@@ -67,6 +73,10 @@ type AppState = {
 
   toggleHabitCheckIn: (habitId: string, dateKey: string) => void;
   ensureMonthLoaded: (month: string) => Promise<void>;
+  setGymPlan: (plan: GymPlan | null) => void;
+  toggleGymWorkout: (dateKey: string) => void;
+  updateGymLog: (dateKey: string, data: Partial<GymLog>) => void;
+  ensureGymMonthLoaded: (month: string) => Promise<void>;
 
   exportJson: () => ExportPayload;
   importJson: (payload: ExportPayload) => Promise<void>;
@@ -82,6 +92,8 @@ function mergePending(a: PendingPatch, b: PendingPatch): PendingPatch {
     taskFields: { ...a.taskFields, ...b.taskFields },
     logFields: { ...a.logFields, ...b.logFields },
     archiveMoves: b.archiveMoves ?? a.archiveMoves,
+    gymPlan: b.gymPlan !== undefined ? b.gymPlan : a.gymPlan,
+    gymLogFields: { ...a.gymLogFields, ...b.gymLogFields },
   };
 }
 
@@ -95,11 +107,14 @@ export const useAppStore = create<AppState>((set, get) => ({
   habits: [],
   tasks: {},
   logs: {},
+  gymPlan: null,
+  gymLogs: {},
+  gymLoadedMonths: {},
   pending: emptyPending(),
   flushTimer: null,
 
   hydrate: async (uid: string) => {
-    if (get().hydrating && get().uid === uid) return;
+    if (get().uid === uid && (get().hydrating || get().hydrated)) return;
     set({ hydrating: true, error: null, uid });
     try {
       const data = await loadInitialData(uid);
@@ -108,6 +123,9 @@ export const useAppStore = create<AppState>((set, get) => ({
         habits: data.habits,
         tasks: data.tasks,
         logs: { [data.currentMonth]: data.currentLog },
+        gymPlan: data.gymPlan,
+        gymLogs: {},
+        gymLoadedMonths: {},
         hydrated: true,
         hydrating: false,
       });
@@ -131,6 +149,9 @@ export const useAppStore = create<AppState>((set, get) => ({
       habits: [],
       tasks: {},
       logs: {},
+      gymPlan: null,
+      gymLogs: {},
+      gymLoadedMonths: {},
       pending: emptyPending(),
       flushTimer: null,
     });
@@ -157,7 +178,9 @@ export const useAppStore = create<AppState>((set, get) => ({
       pending.habitsItems ||
       (pending.taskFields && Object.keys(pending.taskFields).length > 0) ||
       (pending.logFields && Object.keys(pending.logFields).length > 0) ||
-      pending.archiveMoves;
+      pending.archiveMoves ||
+      pending.gymPlan !== undefined ||
+      (pending.gymLogFields && Object.keys(pending.gymLogFields).length > 0);
     if (!hasWork) return;
     try {
       await flushPatches(uid, pending);
@@ -369,8 +392,59 @@ export const useAppStore = create<AppState>((set, get) => ({
     }
   },
 
+  setGymPlan: (plan) => {
+    set((s) => ({
+      gymPlan: plan,
+      pending: mergePending(s.pending, { gymPlan: plan }),
+    }));
+    get().queueFlush();
+  },
+
+  toggleGymWorkout: (dateKey) => {
+    const current = get().gymLogs[dateKey];
+    get().updateGymLog(dateKey, {
+      completedAt: current?.completedAt ? null : new Date().toISOString(),
+    });
+  },
+
+  updateGymLog: (dateKey, data) => {
+    const previous = get().gymLogs[dateKey] ?? {
+      completedAt: null,
+      notes: "",
+      difficulty: null,
+    };
+    const next = { ...previous, ...data };
+    const month = dateKey.slice(0, 7);
+    set((s) => ({
+      gymLogs: { ...s.gymLogs, [dateKey]: next },
+      pending: mergePending(s.pending, {
+        gymLogFields: { [`${month}|${dateKey.slice(8, 10)}`]: next },
+      }),
+    }));
+    get().queueFlush();
+  },
+
+  ensureGymMonthLoaded: async (month: string) => {
+    const { uid } = get();
+    if (!uid) return;
+    // Gym logs are hydrated with the current month; future months are loaded on demand.
+    if (get().gymLoadedMonths[month]) return;
+    set((s) => ({ gymLoadedMonths: { ...s.gymLoadedMonths, [month]: true } }));
+    try {
+      const days = await loadGymMonth(uid, month);
+      set((s) => ({ gymLogs: { ...s.gymLogs, ...days } }));
+    } catch (e) {
+      set((s) => {
+        const gymLoadedMonths = { ...s.gymLoadedMonths };
+        delete gymLoadedMonths[month];
+        return { gymLoadedMonths };
+      });
+      set({ error: e instanceof Error ? e.message : "Failed to load gym month" });
+    }
+  },
+
   exportJson: () => {
-    const { settings, habits, tasks, logs } = get();
+    const { settings, habits, tasks, logs, gymPlan, gymLogs } = get();
     const payload: ExportPayload = {
       version: 1,
       exportedAt: new Date().toISOString(),
@@ -381,6 +455,7 @@ export const useAppStore = create<AppState>((set, get) => ({
         Object.entries(logs).map(([m, days]) => [m, days]),
       ),
       archives: {},
+      gym: { plan: gymPlan, logs: gymLogs },
     };
     return payload;
   },
@@ -395,6 +470,8 @@ export const useAppStore = create<AppState>((set, get) => ({
       habits: payload.habits,
       tasks: payload.tasks,
       logs: payload.logs ?? {},
+      gymPlan: payload.gym?.plan ?? null,
+      gymLogs: payload.gym?.logs ?? {},
       pending: emptyPending(),
     });
   },

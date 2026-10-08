@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   CalendarDays,
   CheckSquare,
+  Dumbbell,
   Flame,
   Settings,
   LogOut,
@@ -20,6 +21,7 @@ const NAV = [
   { href: "/dashboard", label: "Today", icon: CalendarDays },
   { href: "/tasks", label: "Tasks", icon: CheckSquare },
   { href: "/habits", label: "Habits", icon: Flame },
+  { href: "/gym", label: "Gym", icon: Dumbbell },
   { href: "/settings", label: "Settings", icon: Settings },
 ] as const;
 
@@ -27,6 +29,7 @@ const PAGE_SUBTITLE: Record<string, string> = {
   "/dashboard": "Dashboard Today",
   "/tasks": "Tasks List",
   "/habits": "Habits Tracker",
+  "/gym": "Gym Trainer",
   "/settings": "Settings",
 };
 

@@ -29,9 +29,11 @@ NEXT_PUBLIC_FIREBASE_PROJECT_ID=
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
 NEXT_PUBLIC_FIREBASE_APP_ID=
+GEMINI_API_KEY=
+GEMINI_MODEL=gemini-flash-lite-latest
 ```
 
-These are the Firebase **web client** config values (Project settings → Your apps).
+The Firebase values are the **web client** config values (Project settings → Your apps). `GEMINI_API_KEY` is server-only and is used by the Gym trainer route; never prefix it with `NEXT_PUBLIC_` or commit its value.
 
 ## Firebase console checklist
 

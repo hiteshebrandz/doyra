@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useTheme } from "next-themes";
 import { Download, Upload, LogOut, Trash2 } from "lucide-react";
+import { useTheme } from "@/components/providers/ThemeProvider";
 import { MobileHeader } from "@/components/layout/AppShell";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";

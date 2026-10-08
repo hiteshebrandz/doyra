@@ -13,6 +13,8 @@ import {
   DEFAULT_SETTINGS,
   type ExportPayload,
   type Habit,
+  type GymLog,
+  type GymPlan,
   type MonthLogDoc,
   type Task,
   type UserSettings,
@@ -37,6 +39,12 @@ function archiveRef(uid: string, month: string) {
 function logRef(uid: string, month: string) {
   return doc(db, "users", uid, "logs", month);
 }
+function gymPlanRef(uid: string) {
+  return doc(db, "users", uid, "gym", "active");
+}
+function gymLogRef(uid: string, month: string) {
+  return doc(db, "users", uid, "gymLogs", month);
+}
 
 async function readDoc<T>(
   ref: DocumentReference,
@@ -54,13 +62,16 @@ export async function loadInitialData(uid: string): Promise<{
   tasks: Record<string, Task>;
   currentLog: MonthLogDoc["days"];
   currentMonth: string;
+  gymPlan: GymPlan | null;
+  gymLogs: Record<string, GymLog>;
 }> {
   const month = toMonthKey();
-  const [settingsSnap, habitsSnap, tasksSnap, logSnap] = await Promise.all([
+  const [settingsSnap, habitsSnap, tasksSnap, logSnap, gymPlanSnap] = await Promise.all([
     readDoc<UserSettings>(settingsRef(uid), "settings"),
     readDoc<{ items: Habit[] }>(habitsRef(uid), "habits"),
     readDoc<{ items: Record<string, Task> }>(activeTasksRef(uid), "tasks/active"),
     readDoc<MonthLogDoc>(logRef(uid, month), `logs/${month}`),
+    readDoc<{ plan: GymPlan }>(gymPlanRef(uid), "gym/active"),
   ]);
 
   const settings = settingsSnap ?? {
@@ -88,6 +99,8 @@ export async function loadInitialData(uid: string): Promise<{
     tasks: tasksSnap?.items ?? {},
     currentLog: logSnap?.days ?? {},
     currentMonth: month,
+    gymPlan: gymPlanSnap?.plan ?? null,
+    gymLogs: {},
   };
 }
 
@@ -97,6 +110,17 @@ export async function loadMonthLog(
 ): Promise<MonthLogDoc["days"]> {
   const data = await readDoc<MonthLogDoc>(logRef(uid, month), `logs/${month}`);
   return data?.days ?? {};
+}
+
+export async function loadGymMonth(
+  uid: string,
+  month: string,
+): Promise<Record<string, GymLog>> {
+  const data = await readDoc<{ items: Record<string, GymLog> }>(
+    gymLogRef(uid, month),
+    `gymLogs/${month}`,
+  );
+  return data?.items ?? {};
 }
 
 export async function loadArchiveMonth(
@@ -121,6 +145,8 @@ export type PendingPatch = {
     tasks: Record<string, Task>;
     removeFromActive: string[];
   };
+  gymPlan?: GymPlan | null;
+  gymLogFields?: Record<string, GymLog | null>;
 };
 
 export async function flushPatches(
@@ -191,6 +217,27 @@ export async function flushPatches(
     ops += 3;
   }
 
+  if (patch.gymPlan !== undefined) {
+    if (patch.gymPlan === null) batch.delete(gymPlanRef(uid));
+    else batch.set(gymPlanRef(uid), { plan: patch.gymPlan }, { merge: true });
+    ops += 1;
+  }
+
+  if (patch.gymLogFields && Object.keys(patch.gymLogFields).length > 0) {
+    const byMonth: Record<string, Record<string, GymLog | ReturnType<typeof deleteField>>> = {};
+    for (const [path, value] of Object.entries(patch.gymLogFields)) {
+      const [month, day] = path.split("|");
+      if (!byMonth[month]) byMonth[month] = {};
+      byMonth[month][`items.${day}`] = value === null ? deleteField() : value;
+    }
+    for (const [month, fields] of Object.entries(byMonth)) {
+      const ref = gymLogRef(uid, month);
+      batch.set(ref, { items: {} }, { merge: true });
+      batch.update(ref, fields);
+      ops += 2;
+    }
+  }
+
   if (ops === 0) return;
   await batch.commit();
   trackWrite(ops, "flushPatches");
@@ -204,6 +251,7 @@ export async function importData(
   batch.set(settingsRef(uid), payload.settings, { merge: true });
   batch.set(habitsRef(uid), { items: payload.habits }, { merge: true });
   batch.set(activeTasksRef(uid), { items: payload.tasks }, { merge: true });
+  if (payload.gym?.plan) batch.set(gymPlanRef(uid), { plan: payload.gym.plan }, { merge: true });
 
   let count = 3;
   for (const [month, days] of Object.entries(payload.logs ?? {})) {
@@ -214,6 +262,11 @@ export async function importData(
     batch.set(archiveRef(uid, month), { items }, { merge: true });
     count += 1;
   }
+  for (const [month, logs] of Object.entries(payload.gym?.logs ?? {})) {
+    batch.set(gymLogRef(uid, month), { items: logs }, { merge: true });
+    count += 1;
+  }
+  if (payload.gym?.plan) count += 1;
 
   await batch.commit();
   trackWrite(count, "importData");
@@ -229,11 +282,13 @@ export async function deleteAllUserData(
   batch.delete(settingsRef(uid));
   batch.delete(habitsRef(uid));
   batch.delete(activeTasksRef(uid));
-  let count = 3;
+  batch.delete(gymPlanRef(uid));
+  let count = 4;
   for (const month of months) {
     batch.delete(logRef(uid, month));
     batch.delete(archiveRef(uid, month));
-    count += 2;
+    batch.delete(gymLogRef(uid, month));
+    count += 3;
   }
   await batch.commit();
   trackWrite(count, "deleteAllUserData");

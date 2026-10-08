@@ -47,12 +47,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let unsub = () => {};
+    let mounted = true;
     void (async () => {
       try {
         await getRedirectResult(auth);
       } catch {
         // ignore redirect errors here; login page can surface them
       }
+      if (!mounted) return;
       unsub = onAuthStateChanged(auth, (next) => {
         setUser(next);
         setLoading(false);
@@ -63,7 +65,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       });
     })();
-    return () => unsub();
+    return () => {
+      mounted = false;
+      unsub();
+    };
   }, [hydrate, resetStore]);
 
   const signUp = useCallback(

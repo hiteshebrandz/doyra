@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useTheme } from "next-themes";
 import { useAppStore } from "@/store/app-store";
 import type { ThemePreference } from "@/lib/types";
+import { useTheme } from "@/components/providers/ThemeProvider";
 
 /** Apply Firestore theme once after hydrate; persist user theme changes afterward. */
 export function ThemeSync() {
