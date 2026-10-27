@@ -194,9 +194,7 @@ button {
   background: var(--surface);
 }
 
-.card-surface,
-.glass-panel,
-.glass {
+.glass-panel {
   background: var(--surface-container-lowest);
   border: 1px solid var(--outline-variant);
   box-shadow: var(--shadow-card);
@@ -204,8 +202,7 @@ button {
   -webkit-backdrop-filter: none;
 }
 
-.glow-button,
-.royal-button {
+.glow-button {
   background: var(--lime);
   color: #0d0d0d;
   border: 1px solid transparent;
@@ -213,8 +210,7 @@ button {
   transition: background-color 150ms ease, transform 150ms ease;
 }
 
-.glow-button:hover,
-.royal-button:hover {
+.glow-button:hover {
   background: var(--lime-hover);
 }
 
@@ -250,9 +246,6 @@ button {
   scrollbar-width: none;
 }
 
-.pt-safe {
-  padding-top: var(--safe-top);
-}
 .pb-safe {
   padding-bottom: var(--safe-bottom);
 }

@@ -141,7 +141,7 @@ export default function TasksPage() {
         </div>
 
         {/* Segmented tabs */}
-        <div className="flex items-center p-1 bg-surface-container-low rounded-xl overflow-x-auto no-scrollbar shadow-[inset_0_1px_3px_rgba(11,28,48,0.06)]">
+        <div className="flex items-center p-1 bg-surface-container-low rounded-xl overflow-x-auto no-scrollbar">
           {tabs.map((t) => (
             <button
               key={t.key}
