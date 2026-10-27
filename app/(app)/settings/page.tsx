@@ -158,7 +158,7 @@ export default function SettingsPage() {
             <GlassCard className="rounded-2xl">
               <h2 className="mb-1 font-bold text-on-surface">Android app</h2>
               <p className="mb-3 text-sm text-on-surface-variant">
-                Install Doyrai on your phone. Unfinished tasks remind you at 8:00 pm.
+                Install Ritualoop on your phone. Unfinished tasks remind you at 8:00 pm.
                 That reminder is only in the app.
               </p>
               <a

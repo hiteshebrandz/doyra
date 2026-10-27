@@ -27,7 +27,7 @@ export function HabitCard({
   const labels = weekStart === 1 ? WEEK_LABELS_MON : WEEK_LABELS_SUN;
 
   return (
-    <div className="relative overflow-hidden rounded-xl bg-surface-container-lowest p-4 shadow-sm hover:shadow-md transition-all">
+    <div className="relative overflow-hidden rounded-3xl border border-outline-variant bg-surface-container-lowest p-4 transition duration-200">
       <div className="flex items-center justify-between">
         <div className="flex items-start gap-3 min-w-0">
           <button
@@ -84,10 +84,10 @@ export function HabitCard({
           }}
           whileTap={{ scale: 0.95 }}
           className={cn(
-            "relative flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full transition-transform focus-ring",
+            "relative flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border transition-transform duration-150 focus-ring",
             stats.checked
-              ? "bg-primary text-on-primary shadow-md shadow-primary/30"
-              : "bg-surface-container text-on-surface-variant",
+              ? "border-transparent bg-[var(--lime)] text-[#0d0d0d]"
+              : "border-outline-variant bg-transparent text-on-surface-variant",
           )}
         >
           {stats.checked ? <Check className="h-[22px] w-[22px]" /> : null}

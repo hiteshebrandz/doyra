@@ -19,7 +19,7 @@ export function ProgressRing({
 
   return (
     <div
-      className="relative inline-flex items-center justify-center drop-shadow-[0_0_8px_rgba(70,72,212,0.3)]"
+      className="relative inline-flex items-center justify-center"
       style={{ width: size, height: size }}
     >
       <svg width={size} height={size} className="-rotate-90" aria-hidden>
@@ -41,7 +41,7 @@ export function ProgressRing({
           strokeLinecap="round"
           strokeDasharray={c}
           strokeDashoffset={offset}
-          className="transition-all duration-700 ease-out"
+          className="transition-all duration-300 ease-out"
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">

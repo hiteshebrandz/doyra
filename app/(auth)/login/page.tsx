@@ -43,7 +43,7 @@ export default function LoginPage() {
     <div>
       <h1 className="text-2xl font-bold tracking-tight text-on-surface">Welcome back</h1>
       <p className="mt-1 text-sm text-on-surface-variant">
-        Sign in to continue to Doyrai.
+        Sign in to continue to Ritualoop.
       </p>
 
       <form onSubmit={onSubmit} className="mt-6 space-y-4">

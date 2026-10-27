@@ -98,8 +98,8 @@ export default function DashboardPage() {
       hint: `${counts.pending} remaining`,
       icon: <CheckSquare className="h-[18px] w-[18px]" />,
       glow: "bg-primary-fixed/40",
-      iconBg: "bg-primary-fixed text-primary shadow-[0_0_12px_rgba(70,72,212,0.2)]",
-      shadow: "shadow-[0_10px_25px_-5px_rgba(70,72,212,0.08)]",
+      iconBg: "bg-primary-fixed text-primary",
+      shadow: "border border-outline-variant",
     },
     {
       label: "Completed",
@@ -107,8 +107,8 @@ export default function DashboardPage() {
       hint: "Keep going",
       icon: <ListChecks className="h-[18px] w-[18px]" />,
       glow: "bg-tertiary-fixed/50",
-      iconBg: "bg-tertiary-fixed text-tertiary shadow-[0_0_12px_rgba(0,108,73,0.2)]",
-      shadow: "shadow-[0_10px_25px_-5px_rgba(0,108,73,0.08)]",
+      iconBg: "bg-tertiary-fixed text-tertiary",
+      shadow: "border border-outline-variant",
     },
     {
       label: "Habits Done",
@@ -117,7 +117,7 @@ export default function DashboardPage() {
       icon: <Flame className="h-[18px] w-[18px]" />,
       glow: "bg-secondary-fixed/50",
       iconBg: "bg-secondary-fixed text-secondary",
-      shadow: "shadow-[0_10px_25px_-5px_rgba(107,56,212,0.08)]",
+      shadow: "border border-outline-variant",
     },
     {
       label: "Overdue",
@@ -126,7 +126,7 @@ export default function DashboardPage() {
       icon: <BadgeCheck className="h-[18px] w-[18px]" />,
       glow: "bg-surface-container-high/60",
       iconBg: "bg-surface-container text-on-surface-variant",
-      shadow: "shadow-[0_10px_25px_-5px_rgba(70,72,212,0.06)]",
+      shadow: "border border-outline-variant",
     },
   ];
 
@@ -137,26 +137,23 @@ export default function DashboardPage() {
 
       <div className="px-4 md:px-0 space-y-6">
         {/* Hero greeting */}
-        <section className="relative w-full rounded-3xl p-5 overflow-hidden bg-surface-container-lowest shadow-[0_12px_32px_-4px_rgba(70,72,212,0.08),0_4px_16px_rgba(11,28,48,0.03)]">
-          <div className="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-primary-fixed/60 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-10 -left-10 w-36 h-36 rounded-full bg-secondary-fixed/50 blur-2xl pointer-events-none" />
+        <section className="relative w-full overflow-hidden rounded-3xl border border-outline-variant bg-surface-container-lowest p-5">
           <div className="relative z-10 flex flex-col space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="min-w-0 truncate text-[0.75rem] font-semibold uppercase tracking-wide text-on-surface-variant">
+              <span className="min-w-0 truncate text-[13px] font-medium uppercase tracking-[0.14em] text-on-surface-variant">
                 {dateLabel}
               </span>
-              <div className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-secondary-fixed/70 px-3 py-1 text-[0.6875rem] font-bold text-secondary">
-                <span>🔥</span>
+              <div className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary-fixed px-3 py-1 text-[12px] font-semibold text-primary">
+                <span aria-hidden>🔥</span>
                 <span>Keep your flow</span>
               </div>
             </div>
             <div className="min-w-0">
-              <h1 className="break-words text-2xl font-bold tracking-tight text-on-surface md:text-[2rem]">
-                {greetingForNow()}, {name}{" "}
-                <span className="inline-block">✨</span>
+              <h1 className="break-words text-[2.25rem] font-extrabold leading-none text-on-surface md:text-4xl">
+                {greetingForNow()}, {name}
               </h1>
-              <p className="text-sm text-on-surface-variant mt-1 leading-relaxed">
-                “Small disciplined actions compound into quiet mastery.”
+              <p className="mt-2 text-sm leading-relaxed text-on-surface-variant">
+                Small disciplined actions compound into quiet mastery.
               </p>
             </div>
           </div>
@@ -168,7 +165,7 @@ export default function DashboardPage() {
             <div
               key={s.label}
               className={cn(
-                "relative overflow-hidden rounded-2xl p-4 bg-surface-container-lowest active:scale-[0.98] transition-all flex flex-col justify-between",
+                "relative flex flex-col justify-between overflow-hidden rounded-3xl bg-surface-container-lowest p-4 transition duration-200 active:scale-[0.98]",
                 s.shadow,
               )}
             >
@@ -192,7 +189,7 @@ export default function DashboardPage() {
                 </div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-on-surface tabular">{s.value}</div>
+                <div className="font-heading text-[2.625rem] font-extrabold leading-none text-on-surface tabular">{s.value}</div>
                 <div className="text-[0.75rem] text-on-surface-variant mt-0.5">{s.hint}</div>
               </div>
             </div>
@@ -334,7 +331,7 @@ function HabitFocusRow({
     <div
       className={cn(
         "group flex items-center justify-between p-3 rounded-2xl transition-all active:scale-[0.99]",
-        checked ? "bg-surface-container-low" : "bg-surface-container-lowest shadow-[0_4px_16px_rgba(70,72,212,0.08)]",
+        checked ? "border border-outline-variant bg-surface-container-low" : "border border-outline-variant bg-surface-container-lowest",
       )}
     >
       <div className="flex items-center gap-3 min-w-0">
@@ -360,10 +357,10 @@ function HabitFocusRow({
         aria-label={checked ? "Uncheck" : "Check"}
         onClick={onToggle}
         className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-transform active:scale-90 focus-ring",
+          "flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border transition-transform duration-150 active:scale-95 focus-ring",
           checked
-            ? "bg-tertiary text-on-tertiary shadow-[0_0_12px_rgba(0,108,73,0.35)]"
-            : "bg-surface-container text-on-surface-variant",
+            ? "border-transparent bg-[var(--lime)] text-[#0d0d0d]"
+            : "border-outline-variant bg-transparent text-on-surface-variant",
         )}
       >
         {checked ? <Check className="h-[18px] w-[18px]" /> : null}

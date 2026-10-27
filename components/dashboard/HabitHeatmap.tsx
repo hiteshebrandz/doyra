@@ -54,7 +54,7 @@ export function HabitHeatmap({
               backgroundColor:
                 c.ratio === 0
                   ? "var(--surface-container)"
-                  : `rgba(70, 72, 212, ${0.2 + c.ratio * 0.8})`,
+                  : `color-mix(in srgb, var(--primary) ${Math.round(25 + c.ratio * 75)}%, var(--surface-container))`,
             }}
           />
         ))}
@@ -64,11 +64,11 @@ export function HabitHeatmap({
         <span className="h-3 w-3 rounded-sm bg-surface-container" />
         <span
           className="h-3 w-3 rounded-sm"
-          style={{ backgroundColor: "rgba(70,72,212,0.4)" }}
+          style={{ backgroundColor: "color-mix(in srgb, var(--primary) 45%, var(--surface-container))" }}
         />
         <span
           className="h-3 w-3 rounded-sm"
-          style={{ backgroundColor: "rgba(70,72,212,0.85)" }}
+          style={{ backgroundColor: "var(--primary)" }}
         />
         <span>More</span>
       </div>

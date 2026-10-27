@@ -70,9 +70,9 @@ export function TaskRow({
           void animate(x, 0, { type: "spring", stiffness: 400, damping: 30 });
         }}
         className={cn(
-          "relative flex flex-col p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_16px_rgba(70,72,212,0.06),0_1px_3px_rgba(11,28,48,0.04)] transition-all",
-          overdue && !task.done && "shadow-[0_4px_16px_rgba(186,26,26,0.08)]",
-          task.done && "bg-surface opacity-80",
+          "relative flex flex-col rounded-3xl border border-outline-variant bg-surface-container-lowest p-4 transition duration-200",
+          overdue && !task.done && "border-error",
+          task.done && "opacity-80",
         )}
       >
         <div className="flex items-start justify-between gap-3">
@@ -85,10 +85,10 @@ export function TaskRow({
                 onToggle();
               }}
               className={cn(
-                "mt-0.5 w-5 h-5 rounded-md flex items-center justify-center transition focus-ring flex-shrink-0",
+                "mt-0.5 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border transition duration-150 focus-ring",
                 task.done
-                  ? "bg-primary text-on-primary shadow-[0_0_12px_rgba(70,72,212,0.35)]"
-                  : "bg-surface-container text-transparent hover:text-outline",
+                  ? "border-transparent bg-[var(--lime)] text-[#0d0d0d]"
+                  : "border-outline-variant bg-transparent text-transparent",
               )}
             >
               {task.done ? <Check className="h-3.5 w-3.5" /> : null}

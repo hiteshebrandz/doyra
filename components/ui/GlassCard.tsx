@@ -11,7 +11,7 @@ export function GlassCard({
   return (
     <div
       className={cn(
-        "glass-panel rounded-3xl p-4 md:p-5",
+        "glass-panel rounded-3xl p-4 md:p-5 transition duration-200",
         hover && "card-surface-hover active:scale-[0.98]",
         className,
       )}

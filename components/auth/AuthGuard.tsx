@@ -44,14 +44,14 @@ export function AuthSplash() {
       aria-label="Loading"
     >
       <Image
-        src="/doyra-mark.svg"
-        alt="Doyrai"
+        src="/ritualoop-mark.png"
+        alt="Ritualoop"
         width={56}
         height={56}
         priority
         className="animate-pulse"
       />
-      <p className="text-sm text-on-surface-variant">Loading Doyrai…</p>
+      <p className="text-sm text-on-surface-variant">Loading Ritualoop…</p>
     </div>
   );
 }

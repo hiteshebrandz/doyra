@@ -29,9 +29,9 @@ const PRIORITIES: {
   hint: string;
   dot: string;
 }[] = [
-  { value: "low", label: "Low", hint: "Easy pace", dot: "bg-tertiary-container shadow-[0_0_6px_rgba(0,136,93,0.35)]" },
-  { value: "medium", label: "Medium", hint: "Normal focus", dot: "bg-primary shadow-[0_0_6px_rgba(70,72,212,0.35)]" },
-  { value: "high", label: "High", hint: "Urgent push", dot: "bg-error shadow-[0_0_6px_rgba(186,26,26,0.35)]" },
+  { value: "low", label: "Low", hint: "Easy pace", dot: "bg-tertiary-container" },
+  { value: "medium", label: "Medium", hint: "Normal focus", dot: "bg-[var(--lime)]" },
+  { value: "high", label: "High", hint: "Urgent push", dot: "bg-error" },
 ];
 
 export function TaskForm({

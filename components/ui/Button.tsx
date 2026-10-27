@@ -8,9 +8,9 @@ type Size = "sm" | "md" | "lg" | "icon";
 
 const variants: Record<Variant, string> = {
   primary:
-    "glow-button text-white hover:brightness-110 border border-transparent",
+    "glow-button border border-transparent font-bold",
   secondary:
-    "bg-primary/10 text-primary hover:bg-primary/15 border border-transparent",
+    "border border-outline-variant bg-transparent text-on-surface hover:border-primary hover:bg-surface-container-low",
   ghost:
     "bg-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface border-transparent",
   danger: "bg-error text-on-error hover:brightness-110 border-transparent",
@@ -18,8 +18,8 @@ const variants: Record<Variant, string> = {
 
 const sizes: Record<Size, string> = {
   sm: "h-9 px-3 text-sm rounded-[10px]",
-  md: "h-11 px-4 text-[15px] rounded-xl",
-  lg: "h-12 px-5 text-base rounded-xl",
+  md: "h-11 px-4 text-[15px] rounded-2xl",
+  lg: "h-12 px-5 text-[15px] rounded-2xl",
   icon: "h-11 w-11 rounded-full inline-flex items-center justify-center",
 };
 
@@ -46,7 +46,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       ref={ref}
       disabled={disabled || loading}
       className={cn(
-        "inline-flex items-center justify-center gap-2 font-semibold transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none focus-ring min-h-11",
+        "inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl font-bold transition duration-150 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 focus-ring",
         variants[variant],
         sizes[size],
         className,

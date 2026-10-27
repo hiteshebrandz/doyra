@@ -2,8 +2,20 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useTheme } from "@/components/providers/ThemeProvider";
+
+const heights = { sm: 28, md: 36, lg: 44 } as const;
+
+function LogoWord({ size }: { size: number }) {
+  return (
+    <span
+      className="font-heading font-extrabold leading-none tracking-tight"
+      style={{ fontSize: Math.round(size * 0.62) }}
+    >
+      <span className="text-on-surface">Ritual</span>
+      <span className="text-[var(--logo-loop)]">loop</span>
+    </span>
+  );
+}
 
 export function BrandLogo({
   size = "md",
@@ -14,40 +26,28 @@ export function BrandLogo({
   href?: string;
   markOnly?: boolean;
 }) {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
-  const heights = { sm: 28, md: 36, lg: 44 };
   const h = heights[size];
-  const dark = mounted && resolvedTheme === "dark";
-
-  const mark = (
-    <Image src="/doyra-mark.svg" alt="Doyrai" width={h} height={h} priority />
-  );
-
-  const full = (
-    <Image
-      src={dark ? "/doyra-logo-dark.svg" : "/doyra-logo.svg"}
-      alt="Doyrai"
-      width={Math.round(h * 4.15)}
-      height={h}
-      priority
-    />
-  );
 
   return (
     <Link
       href={href}
-      className="inline-flex items-center focus-ring rounded-xl"
-      aria-label="Doyrai home"
+      className="inline-flex items-center gap-2 focus-ring rounded-xl"
+      aria-label="Ritualoop home"
     >
-      {markOnly ? mark : full}
+      <Image
+        src="/ritualoop-mark.png"
+        alt=""
+        width={h}
+        height={h}
+        className="flex-shrink-0"
+        priority
+      />
+      {markOnly ? null : <LogoWord size={h} />}
     </Link>
   );
 }
 
-/** Wordmark-style brand used in DayFlow mobile headers. */
+/** Wordmark-style brand used in mobile headers. */
 export function BrandWordmark({
   subtitle,
 }: {
@@ -56,7 +56,7 @@ export function BrandWordmark({
   return (
     <div className="flex items-center gap-2.5 min-w-0">
       <Image
-        src="/doyra-mark.svg"
+        src="/ritualoop-mark.png"
         alt=""
         width={32}
         height={32}
@@ -64,12 +64,7 @@ export function BrandWordmark({
         priority
       />
       <div className="flex flex-col min-w-0">
-        <div className="flex items-center gap-1.5">
-          <span className="font-bold tracking-tight text-on-surface leading-none text-[1.125rem]">
-            Doyrai
-          </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-        </div>
+        <LogoWord size={30} />
         {subtitle ? (
           <span className="text-[0.6875rem] font-medium text-on-surface-variant truncate leading-tight tracking-wide">
             {subtitle}

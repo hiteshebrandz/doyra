@@ -47,7 +47,7 @@ function DayPreview({ className = "" }: { className?: string }) {
           </p>
           <p className="mt-1 truncate text-xl font-semibold tracking-tight">Good evening</p>
         </div>
-        <span className="shrink-0 rounded-2xl bg-primary px-3.5 py-2 text-sm font-bold text-on-primary shadow-[0_8px_20px_rgba(77,80,230,0.35)]">
+        <span className="shrink-0 rounded-2xl bg-[var(--lime)] px-3.5 py-2 text-sm font-bold text-[#0d0d0d]">
           75%
         </span>
       </div>
@@ -147,7 +147,7 @@ function PhoneHome() {
         <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-primary">
           Your day, in one place
         </p>
-        <h1 className="mt-3 max-w-[12ch] text-[2.75rem] font-bold leading-[0.96] tracking-tight">
+        <h1 className="mt-3 max-w-[12ch] text-[2.25rem] font-extrabold leading-[0.96] tracking-tight sm:text-[2.75rem]">
           Plan it.
           <br />
           Do it.
@@ -198,7 +198,7 @@ function DesktopHome() {
           <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-primary">
             Your day, in one place
           </p>
-          <h1 className="mt-4 text-6xl font-bold leading-[0.96] tracking-tight lg:text-7xl">
+          <h1 className="mt-4 text-6xl font-extrabold leading-[0.96] tracking-tight lg:text-7xl">
             Plan it.
             <br />
             Do it.
@@ -228,7 +228,7 @@ function DesktopHome() {
       <footer className="border-t border-outline-variant/30 px-6 py-8 text-sm text-on-surface-variant">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3">
           <BrandLogo size="sm" href="/" />
-          <p>© {new Date().getFullYear()} Doyrai. Plan it. Do it. Repeat.</p>
+          <p>© {new Date().getFullYear()} Ritualoop. Plan it. Do it. Repeat.</p>
         </div>
       </footer>
     </div>

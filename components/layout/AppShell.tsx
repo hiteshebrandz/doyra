@@ -10,10 +10,10 @@ import {
   Settings,
   LogOut,
   Plus,
-  User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BrandLogo, BrandWordmark } from "@/components/layout/BrandLogo";
+import { ProfileButton } from "@/components/layout/ProfileButton";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -37,7 +37,7 @@ function subtitleFor(pathname: string): string {
   for (const [path, label] of Object.entries(PAGE_SUBTITLE)) {
     if (pathname.startsWith(path)) return label;
   }
-  return "Doyrai";
+  return "Ritualoop";
 }
 
 export function DesktopSidebar() {
@@ -69,10 +69,10 @@ export function DesktopSidebar() {
               key={href}
               href={href}
               className={cn(
-                "relative flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition focus-ring",
+                "relative flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold transition duration-150 focus-ring",
                 "justify-center lg:justify-start",
                 active
-                  ? "bg-primary-fixed/70 text-primary"
+                  ? "bg-primary-fixed text-primary"
                   : "text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface",
               )}
               aria-current={active ? "page" : undefined}
@@ -145,7 +145,7 @@ export function MobileFab({
   href?: string;
 }) {
   const className =
-    "flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-tr from-primary to-secondary text-on-primary shadow-[0_8px_24px_rgba(70,72,212,0.4)] active:scale-95 transition-transform focus-ring";
+    "glow-button flex h-14 w-14 items-center justify-center rounded-full transition-transform duration-150 active:scale-95 focus-ring";
 
   if (onClick) {
     return (
@@ -187,9 +187,7 @@ export function MobileHeader({ title }: { title: string }) {
         <BrandWordmark subtitle={subtitle} />
         <div className="flex items-center gap-1 flex-shrink-0">
           <ThemeToggle compact />
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-[0_0_12px_rgba(70,72,212,0.3)]">
-            <User className="h-[18px] w-[18px] text-on-primary" />
-          </div>
+          <ProfileButton />
         </div>
       </div>
     </header>

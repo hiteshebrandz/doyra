@@ -51,7 +51,7 @@ export default function SignupPage() {
         Create your account
       </h1>
       <p className="mt-1 text-sm text-on-surface-variant">
-        Start planning habits and tasks with Doyrai.
+        Start planning habits and tasks with Ritualoop.
       </p>
 
       <form onSubmit={onSubmit} className="mt-6 space-y-4">

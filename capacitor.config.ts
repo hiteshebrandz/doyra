@@ -20,9 +20,9 @@ const serverUrl = envValue("NEXT_PUBLIC_APP_URL");
 
 const config: CapacitorConfig = {
   appId: "com.doyrai.app",
-  appName: "Doyrai",
+  appName: "Ritualoop",
   webDir: "capacitor-web",
-  backgroundColor: "#F8F9FF",
+  backgroundColor: "#0D0D0D",
   ...(serverUrl
     ? {
         server: {

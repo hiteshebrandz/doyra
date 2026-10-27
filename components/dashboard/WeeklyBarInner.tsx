@@ -31,14 +31,14 @@ export default function WeeklyBarInner({
             tick={{ fill: "var(--on-surface-variant)", fontSize: 12 }}
           />
           <Tooltip
-            cursor={{ fill: "rgba(70,72,212,0.08)" }}
+            cursor={{ fill: "color-mix(in srgb, var(--primary) 16%, transparent)" }}
             contentStyle={{
               borderRadius: 12,
               border: "1px solid var(--card-border)",
               background: "var(--surface-container-lowest)",
             }}
           />
-          <Bar dataKey="value" fill="#4648D4" radius={[8, 8, 4, 4]} />
+          <Bar dataKey="value" fill="var(--primary)" radius={[8, 8, 4, 4]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

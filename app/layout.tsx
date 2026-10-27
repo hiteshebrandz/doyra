@@ -1,32 +1,42 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Darker_Grotesque, DM_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { ToastProvider } from "@/components/ui/Toast";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
+const display = Darker_Grotesque({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-display",
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["600", "700", "800"],
+});
+
+const body = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Doyrai — Plan it. Do it. Repeat.",
-    template: "%s · Doyrai",
+    default: "Ritualoop — Plan it. Do it. Repeat.",
+    template: "%s · Ritualoop",
   },
   description:
-    "Doyrai is a calm personal task & habit manager. Plan it. Do it. Repeat.",
-  applicationName: "Doyrai",
+    "Ritualoop is a calm personal task and habit manager. Plan it. Do it. Repeat.",
+  applicationName: "Ritualoop",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Doyrai",
+    title: "Ritualoop",
   },
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/app-icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
     apple: [{ url: "/apple-touch-icon.png" }],
   },
   manifest: "/manifest.webmanifest",
@@ -34,8 +44,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F8F9FF" },
-    { media: "(prefers-color-scheme: dark)", color: "#0B1424" },
+    { media: "(prefers-color-scheme: light)", color: "#F3F5F0" },
+    { media: "(prefers-color-scheme: dark)", color: "#0D0D0D" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -49,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${jakarta.variable} h-full`} suppressHydrationWarning>
+    <html lang="en" className={`${display.variable} ${body.variable} h-full`} suppressHydrationWarning>
       <body
         className="mesh-bg min-h-[100dvh] font-sans antialiased text-on-surface bg-surface"
         suppressHydrationWarning

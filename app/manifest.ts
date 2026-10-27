@@ -2,13 +2,13 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Doyrai",
-    short_name: "Doyrai",
+    name: "Ritualoop",
+    short_name: "Ritualoop",
     description: "Plan it. Do it. Repeat.",
     start_url: "/dashboard",
     display: "standalone",
-    background_color: "#F8F9FF",
-    theme_color: "#4648D4",
+    background_color: "#0D0D0D",
+    theme_color: "#0D0D0D",
     orientation: "portrait-primary",
     icons: [
       {
@@ -29,9 +29,9 @@ export default function manifest(): MetadataRoute.Manifest {
         type: "image/png",
       },
       {
-        src: "/favicon.svg",
-        sizes: "any",
-        type: "image/svg+xml",
+        src: "/favicon-32.png",
+        sizes: "32x32",
+        type: "image/png",
       },
     ],
   };
