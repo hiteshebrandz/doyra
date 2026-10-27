@@ -7,6 +7,7 @@ import {
 } from "@/components/layout/AppShell";
 import { PageSkeleton } from "@/components/ui/Skeleton";
 import { ThemeSync } from "@/components/providers/ThemeSync";
+import { TaskReminders } from "@/components/tasks/TaskReminders";
 import { useAppStore } from "@/store/app-store";
 import type { ReactNode } from "react";
 
@@ -14,6 +15,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <AuthGuard mode="app">
       <ThemeSync />
+      <TaskReminders />
       <AppFrame>{children}</AppFrame>
     </AuthGuard>
   );
