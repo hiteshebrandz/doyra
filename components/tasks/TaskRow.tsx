@@ -2,9 +2,9 @@
 
 import { useRef, useState } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { Check, Trash2, Pencil, Clock } from "lucide-react";
+import { Check, Trash2, Pencil, Clock, Bell } from "lucide-react";
 import { cn, vibrate } from "@/lib/utils";
-import { isOverdue } from "@/lib/dates";
+import { formatClock, isOverdue } from "@/lib/dates";
 import type { Task } from "@/lib/types";
 
 const priorityBadge: Record<Task["priority"], string> = {
@@ -156,17 +156,27 @@ export function TaskRow({
           </div>
         </div>
 
-        {task.dueDate ? (
-          <div className="mt-3.5 pt-3 flex items-center justify-between bg-surface-container-low/60 -mx-4 -mb-4 px-4 py-2.5 rounded-b-xl">
-            <div
-              className={cn(
-                "flex items-center gap-1.5 font-semibold text-[0.6875rem]",
-                overdue && !task.done ? "text-error" : "text-on-surface-variant",
-              )}
-            >
-              <Clock className="h-4 w-4" />
-              <span>{task.dueDate}</span>
-            </div>
+        {task.dueDate || task.reminderTime ? (
+          <div className="mt-3.5 pt-3 flex flex-wrap items-center gap-x-4 gap-y-1 bg-surface-container-low/60 -mx-4 -mb-4 px-4 py-2.5 rounded-b-xl">
+            {task.dueDate ? (
+              <div
+                className={cn(
+                  "flex items-center gap-1.5 font-semibold text-[0.6875rem]",
+                  overdue && !task.done ? "text-error" : "text-on-surface-variant",
+                )}
+              >
+                <Clock className="h-4 w-4" />
+                <span>Due {task.dueDate}</span>
+              </div>
+            ) : null}
+            {task.reminderTime ? (
+              <div className="flex items-center gap-1.5 font-semibold text-[0.6875rem] text-primary">
+                <Bell className="h-4 w-4" />
+                <span>
+                  Reminder {task.reminderDate || task.dueDate} · {formatClock(task.reminderTime)}
+                </span>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </motion.div>

@@ -141,17 +141,17 @@ export default function DashboardPage() {
           <div className="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-primary-fixed/60 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-10 -left-10 w-36 h-36 rounded-full bg-secondary-fixed/50 blur-2xl pointer-events-none" />
           <div className="relative z-10 flex flex-col space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[0.75rem] font-semibold tracking-wide uppercase text-on-surface-variant">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="min-w-0 truncate text-[0.75rem] font-semibold uppercase tracking-wide text-on-surface-variant">
                 {dateLabel}
               </span>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-fixed/70 text-secondary text-[0.6875rem] font-bold">
+              <div className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-secondary-fixed/70 px-3 py-1 text-[0.6875rem] font-bold text-secondary">
                 <span>🔥</span>
                 <span>Keep your flow</span>
               </div>
             </div>
-            <div>
-              <h1 className="text-2xl md:text-[2rem] font-bold tracking-tight text-on-surface">
+            <div className="min-w-0">
+              <h1 className="break-words text-2xl font-bold tracking-tight text-on-surface md:text-[2rem]">
                 {greetingForNow()}, {name}{" "}
                 <span className="inline-block">✨</span>
               </h1>
@@ -178,13 +178,13 @@ export default function DashboardPage() {
                   s.glow,
                 )}
               />
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[0.6875rem] font-medium text-on-surface-variant">
+              <div className="mb-2 flex items-start justify-between gap-2">
+                <span className="min-w-0 text-[0.6875rem] font-medium leading-tight text-on-surface-variant">
                   {s.label}
                 </span>
                 <div
                   className={cn(
-                    "w-8 h-8 rounded-full flex items-center justify-center",
+                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
                     s.iconBg,
                   )}
                 >

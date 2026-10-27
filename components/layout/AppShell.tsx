@@ -109,7 +109,7 @@ export function MobileTabBar() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-40 md:hidden pb-safe bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(11,28,48,0.06)]"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-outline-variant/30 pb-safe glass-panel md:hidden"
       aria-label="Primary"
     >
       <div className="h-16 px-2 flex items-center justify-between">
@@ -182,8 +182,8 @@ export function MobileHeader({ title }: { title: string }) {
   const subtitle = title || subtitleFor(pathname);
 
   return (
-    <header className="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] md:hidden">
-      <div className="h-16 px-4 flex items-center justify-between gap-3">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-outline-variant/25 pt-[var(--safe-top)] glass-panel md:hidden">
+      <div className="flex h-16 items-center justify-between gap-3 px-4">
         <BrandWordmark subtitle={subtitle} />
         <div className="flex items-center gap-1 flex-shrink-0">
           <ThemeToggle compact />

@@ -85,12 +85,12 @@ export default function HabitsPage() {
 
         {/* Streak banner */}
         <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-primary to-secondary p-4 text-on-primary shadow-lg shadow-primary/20">
-          <div className="relative z-10 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/20 backdrop-blur-md">
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-md">
                 <span className="text-2xl">🔥</span>
               </div>
-              <div className="flex flex-col">
+              <div className="flex min-w-0 flex-col">
                 <div className="flex items-center gap-2">
                   <span className="text-xl font-bold tracking-tight">
                     {dayStats.done}/{active.length || 0} done
@@ -106,7 +106,7 @@ export default function HabitsPage() {
                 </span>
               </div>
             </div>
-            <div className="text-right">
+            <div className="shrink-0 text-right">
               <span className="text-2xl font-extrabold leading-none">{dayStats.pct}%</span>
               <span className="block text-[0.6875rem] opacity-80">day score</span>
             </div>

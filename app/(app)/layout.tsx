@@ -38,7 +38,7 @@ function AppFrame({ children }: { children: ReactNode }) {
             You&apos;re offline — changes will sync when you reconnect.
           </div>
         ) : null}
-        <main className="mx-auto min-h-[100dvh] w-full max-w-6xl pt-16 pb-[calc(var(--tabbar-h)+var(--safe-bottom)+72px)] md:pt-6 md:pb-8 md:px-6">
+        <main className="mx-auto min-h-[100dvh] w-full max-w-6xl px-0 pt-[calc(var(--header-h)+var(--safe-top))] pb-[calc(var(--tabbar-h)+var(--safe-bottom)+5.5rem)] md:px-6 md:pt-8 md:pb-10">
           {!hydrated || hydrating ? <PageSkeleton /> : children}
         </main>
       </div>

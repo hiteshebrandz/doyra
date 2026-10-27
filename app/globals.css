@@ -170,17 +170,55 @@ button {
   font-variant-numeric: tabular-nums;
 }
 
-/* Calm Flow canvas — flat cool surface, no heavy mesh */
+/* Futuristic canvas. Orbs stay behind content and never capture clicks. */
 .mesh-bg {
   position: relative;
   isolation: isolate;
+  overflow-x: hidden;
   background: var(--surface);
 }
 
-.card-surface {
-  background: var(--surface-container-lowest);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-card);
+.mesh-bg::before,
+.mesh-bg::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 999px;
+  filter: blur(40px);
+}
+
+.mesh-bg::before {
+  top: -8rem;
+  left: -6rem;
+  width: 22rem;
+  height: 22rem;
+  background: color-mix(in srgb, var(--primary) 28%, transparent);
+}
+
+.mesh-bg::after {
+  right: -8rem;
+  bottom: 8%;
+  width: 18rem;
+  height: 18rem;
+  background: color-mix(in srgb, var(--secondary) 22%, transparent);
+}
+
+.card-surface,
+.glass-panel {
+  background: color-mix(in srgb, var(--surface-container-lowest) 86%, transparent);
+  border: 1px solid color-mix(in srgb, var(--outline-variant) 55%, transparent);
+  box-shadow: var(--shadow-card), inset 0 1px 0 color-mix(in srgb, white 16%, transparent);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.glow-button {
+  background: linear-gradient(180deg, #7a7cff 0%, #4d50e6 100%);
+  color: #fff;
+  box-shadow:
+    0 14px 32px rgba(77, 80, 230, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .card-surface-hover {
@@ -193,11 +231,11 @@ button {
 
 /* Back-compat alias used across existing components */
 .glass {
-  background: var(--surface-container-lowest);
-  border: 1px solid var(--card-border);
+  background: color-mix(in srgb, var(--surface-container-lowest) 86%, transparent);
+  border: 1px solid color-mix(in srgb, var(--outline-variant) 55%, transparent);
   box-shadow: var(--shadow-card);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .focus-ring:focus-visible {

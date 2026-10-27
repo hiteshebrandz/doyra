@@ -12,6 +12,7 @@ export type HabitFormValues = {
   name: string;
   icon: string;
   color: string;
+  reminderTime: string | null;
 };
 
 export function HabitForm({
@@ -28,11 +29,18 @@ export function HabitForm({
   const [name, setName] = useState(initial?.name ?? "");
   const [icon, setIcon] = useState(initial?.icon ?? "💪");
   const [color, setColor] = useState(initial?.color ?? HABIT_COLORS[0]);
+  const [remind, setRemind] = useState(Boolean(initial?.reminderTime));
+  const [reminderTime, setReminderTime] = useState(initial?.reminderTime || "20:00");
 
   const handle = (e: FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
-    onSubmit({ name: name.trim(), icon, color });
+    onSubmit({
+      name: name.trim(),
+      icon,
+      color,
+      reminderTime: remind ? reminderTime : null,
+    });
   };
 
   return (
@@ -101,6 +109,36 @@ export function HabitForm({
             />
           ))}
         </div>
+      </div>
+      <div className="rounded-xl bg-surface-container-low p-3">
+        <label className="flex items-start gap-3">
+          <input
+            type="checkbox"
+            className="mt-1 h-5 w-5 accent-primary"
+            checked={remind}
+            onChange={(e) => setRemind(e.target.checked)}
+          />
+          <span>
+            <span className="block text-sm font-semibold text-on-surface">
+              Remind me every day
+            </span>
+            <span className="block text-xs text-on-surface-variant">
+              You will see this time on the habit. The app reminds you if it is still open.
+            </span>
+          </span>
+        </label>
+        {remind ? (
+          <div className="mt-3">
+            <Label htmlFor="habit-reminder-time">Reminder time</Label>
+            <Input
+              id="habit-reminder-time"
+              type="time"
+              required
+              value={reminderTime}
+              onChange={(e) => setReminderTime(e.target.value)}
+            />
+          </div>
+        ) : null}
       </div>
       <div className="flex gap-2 pt-2">
         {onCancel ? (

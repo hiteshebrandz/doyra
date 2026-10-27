@@ -8,11 +8,13 @@ import { useAppStore } from "@/store/app-store";
 export function TaskReminders() {
   const hydrated = useAppStore((s) => s.hydrated);
   const tasks = useAppStore((s) => s.tasks);
+  const habits = useAppStore((s) => s.habits);
+  const logs = useAppStore((s) => s.logs);
 
   useEffect(() => {
     if (!hydrated) return;
-    void syncTaskReminders(Object.values(tasks));
-  }, [hydrated, tasks]);
+    void syncTaskReminders(Object.values(tasks), habits, logs);
+  }, [hydrated, tasks, habits, logs]);
 
   return null;
 }

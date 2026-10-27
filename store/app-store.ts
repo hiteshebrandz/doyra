@@ -64,6 +64,8 @@ type AppState = {
     type: TaskType;
     priority: TaskPriority;
     dueDate?: string | null;
+    reminderDate?: string | null;
+    reminderTime?: string | null;
   }) => string;
   updateTask: (id: string, data: Partial<Task>) => void;
   toggleTaskDone: (id: string) => void;
@@ -234,7 +236,15 @@ export const useAppStore = create<AppState>((set, get) => ({
     get().updateHabit(id, { archived: true });
   },
 
-  addTask: ({ title, notes = "", type, priority, dueDate = toDateKey() }) => {
+  addTask: ({
+    title,
+    notes = "",
+    type,
+    priority,
+    dueDate = toDateKey(),
+    reminderDate = null,
+    reminderTime = null,
+  }) => {
     const id = createId();
     const task: Task = {
       id,
@@ -243,6 +253,8 @@ export const useAppStore = create<AppState>((set, get) => ({
       type,
       priority,
       dueDate: dueDate ?? null,
+      reminderDate: reminderTime ? reminderDate || dueDate || null : null,
+      reminderTime: reminderTime || null,
       done: false,
       doneAt: null,
       createdAt: new Date().toISOString(),

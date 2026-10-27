@@ -16,6 +16,15 @@ export function dayOfMonthKey(date: Date = new Date()): string {
   return pad2(date.getDate());
 }
 
+export function formatClock(time: string): string {
+  const [hour, minute] = time.split(":").map(Number);
+  if (!Number.isFinite(hour) || !Number.isFinite(minute)) return time;
+  return new Date(2000, 0, 1, hour, minute).toLocaleTimeString(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
 export function parseDateKey(key: string): Date {
   const [y, m, d] = key.split("-").map(Number);
   return new Date(y, m - 1, d);

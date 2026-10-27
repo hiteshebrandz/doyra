@@ -134,7 +134,7 @@ export default function TasksPage() {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-1 bg-surface-container px-2.5 py-1 rounded-full text-secondary text-[0.6875rem] font-semibold">
+          <div className="flex shrink-0 items-center gap-1 rounded-full bg-surface-container px-2.5 py-1 text-[0.6875rem] font-semibold text-secondary">
             <span>🔥</span>
             <span>{counts.pending} open</span>
           </div>

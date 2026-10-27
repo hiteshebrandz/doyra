@@ -67,6 +67,8 @@ export type Habit = {
   color: string;
   createdAt: string;
   archived: boolean;
+  /** Daily reminder, "HH:mm". Empty when the user does not want one. */
+  reminderTime?: string | null;
 };
 
 export type Task = {
@@ -76,6 +78,10 @@ export type Task = {
   type: TaskType;
   priority: TaskPriority;
   dueDate: string | null;
+  /** Reminder day, "YYYY-MM-DD". Used with reminderTime. */
+  reminderDate?: string | null;
+  /** Reminder clock time, "HH:mm". Empty when the user does not want one. */
+  reminderTime?: string | null;
   done: boolean;
   doneAt: string | null;
   createdAt: string;

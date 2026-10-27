@@ -13,6 +13,8 @@ export type TaskFormValues = {
   type: TaskType;
   priority: TaskPriority;
   dueDate: string;
+  reminderDate: string | null;
+  reminderTime: string | null;
 };
 
 const SCOPES: { value: TaskType; label: string; emoji: string }[] = [
@@ -50,6 +52,11 @@ export function TaskForm({
     initial?.priority ?? "medium",
   );
   const [dueDate, setDueDate] = useState(initial?.dueDate ?? toDateKey());
+  const [remind, setRemind] = useState(Boolean(initial?.reminderTime));
+  const [reminderDate, setReminderDate] = useState(
+    initial?.reminderDate || initial?.dueDate || toDateKey(),
+  );
+  const [reminderTime, setReminderTime] = useState(initial?.reminderTime || "20:00");
 
   const handle = (e: FormEvent) => {
     e.preventDefault();
@@ -60,6 +67,8 @@ export function TaskForm({
       type,
       priority,
       dueDate,
+      reminderDate: remind ? reminderDate || dueDate : null,
+      reminderTime: remind ? reminderTime : null,
     });
   };
 
@@ -140,8 +149,57 @@ export function TaskForm({
           id="task-due"
           type="date"
           value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
+          onChange={(e) => {
+            const next = e.target.value;
+            setReminderDate((current) => (current === dueDate ? next : current));
+            setDueDate(next);
+          }}
         />
+      </div>
+
+      <div className="rounded-xl bg-surface-container-low p-3">
+        <label className="flex items-start gap-3">
+          <input
+            type="checkbox"
+            className="mt-1 h-5 w-5 accent-primary"
+            checked={remind}
+            onChange={(e) => {
+              const on = e.target.checked;
+              setRemind(on);
+              if (on && !reminderDate) setReminderDate(dueDate);
+            }}
+          />
+          <span>
+            <span className="block text-sm font-semibold text-on-surface">Remind me</span>
+            <span className="block text-xs text-on-surface-variant">
+              The app warns you at this time if the task is still open.
+            </span>
+          </span>
+        </label>
+        {remind ? (
+          <div className="mt-3 grid grid-cols-2 gap-3">
+            <div>
+              <Label htmlFor="task-reminder-date">Reminder date</Label>
+              <Input
+                id="task-reminder-date"
+                type="date"
+                required
+                value={reminderDate}
+                onChange={(e) => setReminderDate(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="task-reminder-time">Reminder time</Label>
+              <Input
+                id="task-reminder-time"
+                type="time"
+                required
+                value={reminderTime}
+                onChange={(e) => setReminderTime(e.target.value)}
+              />
+            </div>
+          </div>
+        ) : null}
       </div>
 
       <div>

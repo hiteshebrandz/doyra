@@ -119,7 +119,7 @@ export default function SettingsPage() {
                 if (name !== settings.displayName) saveName();
               }}
             />
-            <p className="mt-2 text-sm text-on-surface-variant">{user?.email}</p>
+            <p className="mt-2 break-all text-sm text-on-surface-variant">{user?.email}</p>
             <Button className="mt-3" onClick={saveName}>
               Save name
             </Button>
@@ -128,7 +128,7 @@ export default function SettingsPage() {
           <GlassCard className="rounded-2xl">
             <h2 className="mb-3 font-bold text-on-surface">Appearance</h2>
             <div className="flex items-center justify-between gap-3">
-              <div>
+              <div className="min-w-0">
                 <p className="font-medium text-on-surface">Theme</p>
                 <p className="text-sm text-on-surface-variant">
                   Light, dark, or system

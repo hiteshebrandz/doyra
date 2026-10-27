@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Bell, Check } from "lucide-react";
 import { cn, vibrate } from "@/lib/utils";
+import { formatClock } from "@/lib/dates";
 import { useHabitStats } from "@/hooks/useHabits";
 import type { Habit } from "@/lib/types";
 
@@ -61,6 +62,15 @@ export function HabitCard({
               <span className="text-[0.6875rem] text-on-surface-variant">
                 {stats.monthPct}% monthly
               </span>
+              {habit.reminderTime ? (
+                <>
+                  <span className="text-outline-variant text-[0.6875rem]">•</span>
+                  <span className="inline-flex items-center gap-1 text-[0.6875rem] font-semibold text-primary">
+                    <Bell className="h-3 w-3" />
+                    {formatClock(habit.reminderTime)}
+                  </span>
+                </>
+              ) : null}
             </div>
           </div>
         </div>
