@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Download, Upload, LogOut, Trash2 } from "lucide-react";
+import { Download, Smartphone, Upload, LogOut, Trash2 } from "lucide-react";
+import { isNativeApp } from "@/lib/native-app";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import { MobileHeader } from "@/components/layout/AppShell";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -27,6 +28,11 @@ export default function SettingsPage() {
   const [name, setName] = useState(settings.displayName);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [nativeApp, setNativeApp] = useState(false);
+
+  useEffect(() => {
+    setNativeApp(isNativeApp());
+  }, []);
 
   useEffect(() => {
     setName(settings.displayName || user?.displayName || "");
@@ -147,6 +153,23 @@ export default function SettingsPage() {
               </select>
             </div>
           </GlassCard>
+
+          {nativeApp ? null : (
+            <GlassCard className="rounded-2xl">
+              <h2 className="mb-1 font-bold text-on-surface">Android app</h2>
+              <p className="mb-3 text-sm text-on-surface-variant">
+                Install Doyrai on your phone. Unfinished tasks remind you at 8:00 pm.
+                That reminder is only in the app.
+              </p>
+              <a
+                href="/doyrai.apk"
+                download="Doyrai.apk"
+                className="inline-flex h-11 min-h-11 items-center justify-center gap-2 rounded-xl bg-primary/10 px-4 text-[15px] font-semibold text-primary transition hover:bg-primary/15 focus-ring"
+              >
+                <Smartphone className="h-4 w-4" /> Download app
+              </a>
+            </GlassCard>
+          )}
 
           <GlassCard className="rounded-2xl">
             <h2 className="mb-1 font-bold text-on-surface">Backup</h2>
