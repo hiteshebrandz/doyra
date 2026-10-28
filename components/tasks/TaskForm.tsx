@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { CalendarRange, Sun, Target, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input, Label, Textarea } from "@/components/ui/Input";
 import type { Task, TaskPriority, TaskType } from "@/lib/types";
@@ -17,10 +18,10 @@ export type TaskFormValues = {
   reminderTime: string | null;
 };
 
-const SCOPES: { value: TaskType; label: string; emoji: string }[] = [
-  { value: "daily", label: "Daily", emoji: "☀️" },
-  { value: "weekly", label: "Weekly", emoji: "🗓️" },
-  { value: "monthly", label: "Monthly", emoji: "🎯" },
+const SCOPES: { value: TaskType; label: string; icon: LucideIcon }[] = [
+  { value: "daily", label: "Daily", icon: Sun },
+  { value: "weekly", label: "Weekly", icon: CalendarRange },
+  { value: "monthly", label: "Monthly", icon: Target },
 ];
 
 const PRIORITIES: {
@@ -29,9 +30,9 @@ const PRIORITIES: {
   hint: string;
   dot: string;
 }[] = [
-  { value: "low", label: "Low", hint: "Easy pace", dot: "bg-tertiary-container" },
-  { value: "medium", label: "Medium", hint: "Normal focus", dot: "bg-[var(--lime)]" },
-  { value: "high", label: "High", hint: "Urgent push", dot: "bg-error" },
+  { value: "low", label: "Low", hint: "Whenever", dot: "bg-tertiary-container" },
+  { value: "medium", label: "Medium", hint: "This week", dot: "bg-[var(--lime)]" },
+  { value: "high", label: "High", hint: "Do it first", dot: "bg-error" },
 ];
 
 export function TaskForm({
@@ -73,7 +74,7 @@ export function TaskForm({
   };
 
   const priorityHint =
-    PRIORITIES.find((p) => p.value === priority)?.hint ?? "Normal focus";
+    PRIORITIES.find((p) => p.value === priority)?.hint ?? "This week";
 
   return (
     <form onSubmit={handle} className="flex flex-col gap-4">
@@ -89,13 +90,13 @@ export function TaskForm({
           required
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="e.g., Complete UI animations"
+          placeholder="e.g. Call the dentist"
           autoFocus
         />
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label className="px-0.5">Frequency &amp; Scope</Label>
+        <Label className="px-0.5">Repeats</Label>
         <div className="w-full p-1 bg-surface-container-low rounded-xl flex items-center">
           {SCOPES.map((s) => (
             <button
@@ -109,7 +110,7 @@ export function TaskForm({
                   : "text-on-surface-variant hover:text-on-surface",
               )}
             >
-              <span>{s.emoji}</span>
+              <s.icon className="h-4 w-4" aria-hidden />
               <span>{s.label}</span>
             </button>
           ))}
@@ -118,7 +119,7 @@ export function TaskForm({
 
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between px-0.5">
-          <Label className="mb-0">Priority Matrix</Label>
+          <Label className="mb-0">Priority</Label>
           <span className="text-[0.6875rem] font-semibold text-tertiary-container">
             {priorityHint}
           </span>

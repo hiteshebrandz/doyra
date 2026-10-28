@@ -70,12 +70,12 @@ export default function HabitsPage() {
     <div>
       <MobileHeader title="Habits Tracker" />
 
-      <div className="px-4 md:px-0 space-y-5">
+      <div className="space-y-7 px-5 md:px-0">
         <div className="hidden md:flex md:items-center md:justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-on-surface">Habits</h1>
+            <h1 className="font-heading text-3xl font-extrabold tracking-tight text-on-surface">Habits</h1>
             <p className="text-sm text-on-surface-variant">
-              Build streaks one check-in at a time.
+              Check each one once a day. The streak counts itself.
             </p>
           </div>
           <Button onClick={openNew}>
@@ -83,45 +83,49 @@ export default function HabitsPage() {
           </Button>
         </div>
 
-        {/* Streak banner */}
-        <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-primary to-secondary p-4 text-on-primary shadow-lg shadow-primary/20">
-          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
+        {/* Day summary */}
+        <section className="relative overflow-hidden rounded-3xl border border-outline-variant bg-surface-container-lowest p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-3">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-md">
-                <span className="text-2xl">🔥</span>
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-fixed text-primary">
+                <Flame className="h-5 w-5" aria-hidden />
               </div>
               <div className="flex min-w-0 flex-col">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl font-bold tracking-tight">
-                    {dayStats.done}/{active.length || 0} done
+                  <span className="font-heading text-2xl font-extrabold leading-none tracking-tight text-on-surface">
+                    {dayStats.done} of {active.length || 0} done
                   </span>
-                  {dayStats.pct >= 80 ? (
-                    <span className="rounded-full bg-tertiary-fixed px-2 py-0.5 text-[0.6875rem] font-bold text-[var(--on-tertiary-fixed,#002113)]">
-                      Strong day
+                  {dayStats.pct >= 80 && active.length > 0 ? (
+                    <span className="rounded-full bg-primary-fixed px-2 py-0.5 text-[0.6875rem] font-bold text-primary">
+                      Good day
                     </span>
                   ) : null}
                 </div>
-                <span className="text-sm opacity-90">
-                  Keep the momentum going today!
+                <span className="mt-1 text-sm text-on-surface-variant">
+                  {active.length === 0
+                    ? "Add a habit to start a streak."
+                    : dayStats.done === active.length
+                      ? "Every habit checked for this day."
+                      : `${active.length - dayStats.done} left to check.`}
                 </span>
               </div>
             </div>
             <div className="shrink-0 text-right">
-              <span className="text-2xl font-extrabold leading-none">{dayStats.pct}%</span>
-              <span className="block text-[0.6875rem] opacity-80">day score</span>
+              <span className="font-heading text-[2.625rem] font-extrabold leading-none text-primary tabular">
+                {dayStats.pct}%
+              </span>
+              <span className="block text-[0.6875rem] text-on-surface-variant">of the day</span>
             </div>
           </div>
-          <div className="absolute -right-8 -bottom-10 h-32 w-32 rounded-full bg-secondary-container opacity-40 blur-2xl" />
-          <div className="absolute -left-6 -top-8 h-28 w-28 rounded-full bg-tertiary opacity-30 blur-xl" />
-        </div>
+        </section>
 
         {/* Date navigator */}
-        <div className="flex items-center justify-between rounded-xl bg-surface-container-lowest px-3 py-2.5 shadow-sm">
+        <div className="flex items-center justify-between rounded-3xl border border-outline-variant bg-surface-container-lowest px-3 py-2.5">
           <button
             type="button"
             aria-label="Previous day"
             onClick={() => go(-1)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface active:scale-90 transition-all focus-ring"
+            className="flex h-9 w-9 items-center justify-center rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface active:scale-90 transition-all focus-ring"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -146,7 +150,7 @@ export default function HabitsPage() {
             type="button"
             aria-label="Next day"
             onClick={() => go(1)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface active:scale-90 transition-all focus-ring"
+            className="flex h-9 w-9 items-center justify-center rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface active:scale-90 transition-all focus-ring"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
@@ -165,7 +169,7 @@ export default function HabitsPage() {
           <EmptyState
             icon={<Flame className="h-6 w-6" />}
             title="No habits yet"
-            description="Try Gym, Water, Reading, or Meditation — or invent your own."
+            description="Start with Gym, Water, Reading or Meditation, or make your own."
             action={
               <Button onClick={openNew}>
                 <Plus className="h-4 w-4" /> Create habit
@@ -173,7 +177,7 @@ export default function HabitsPage() {
             }
           />
         ) : (
-          <div className="grid grid-cols-1 gap-3.5">
+          <div className="grid grid-cols-1 gap-5">
             {active.map((habit) => (
               <HabitCard
                 key={habit.id}

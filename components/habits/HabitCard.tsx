@@ -1,10 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Bell, Check } from "lucide-react";
+import { Bell, Check, Flame } from "lucide-react";
 import { cn, vibrate } from "@/lib/utils";
 import { formatClock } from "@/lib/dates";
 import { useHabitStats } from "@/hooks/useHabits";
+import { HabitIcon } from "@/components/habits/HabitIcon";
 import type { Habit } from "@/lib/types";
 
 const WEEK_LABELS_MON = ["M", "T", "W", "T", "F", "S", "S"];
@@ -27,17 +28,17 @@ export function HabitCard({
   const labels = weekStart === 1 ? WEEK_LABELS_MON : WEEK_LABELS_SUN;
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-outline-variant bg-surface-container-lowest p-4 transition duration-200">
+    <div className="relative overflow-hidden rounded-3xl border border-outline-variant bg-surface-container-lowest p-5 transition duration-200">
       <div className="flex items-center justify-between">
         <div className="flex items-start gap-3 min-w-0">
           <button
             type="button"
             onClick={onEdit}
-            className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl text-2xl shadow-sm focus-ring"
-            style={{ backgroundColor: `${habit.color}22` }}
+            className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl focus-ring"
+            style={{ backgroundColor: `${habit.color}22`, color: habit.color }}
             aria-label={`Edit ${habit.name}`}
           >
-            {habit.icon}
+            <HabitIcon icon={habit.icon} className="h-[22px] w-[22px]" />
           </button>
           <div className="flex flex-col min-w-0">
             <button
@@ -55,8 +56,9 @@ export function HabitCard({
               </span>
             </button>
             <div className="flex items-center gap-2 mt-0.5">
-              <span className="text-[0.6875rem] font-semibold text-primary">
-                {stats.current} days 🔥
+              <span className="inline-flex items-center gap-1 text-[0.6875rem] font-semibold text-primary">
+                <Flame className="h-3 w-3" aria-hidden />
+                {stats.current} day streak
               </span>
               <span className="text-outline-variant text-[0.6875rem]">•</span>
               <span className="text-[0.6875rem] text-on-surface-variant">

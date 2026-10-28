@@ -1,48 +1,11 @@
-"use client";
-
-import { AuthGuard } from "@/components/auth/AuthGuard";
-import {
-  DesktopSidebar,
-  MobileTabBar,
-} from "@/components/layout/AppShell";
-import { PageSkeleton } from "@/components/ui/Skeleton";
-import { ThemeSync } from "@/components/providers/ThemeSync";
-import { TaskReminders } from "@/components/tasks/TaskReminders";
-import { useAppStore } from "@/store/app-store";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { AuthenticatedApp } from "@/components/layout/AuthenticatedApp";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function AppLayout({ children }: { children: ReactNode }) {
-  return (
-    <AuthGuard mode="app">
-      <ThemeSync />
-      <TaskReminders />
-      <AppFrame>{children}</AppFrame>
-    </AuthGuard>
-  );
-}
-
-function AppFrame({ children }: { children: ReactNode }) {
-  const hydrated = useAppStore((s) => s.hydrated);
-  const hydrating = useAppStore((s) => s.hydrating);
-  const offline = useAppStore((s) => s.offline);
-
-  return (
-    <div className="min-h-[100dvh] bg-surface">
-      <DesktopSidebar />
-      <div className="md:pl-[72px] lg:pl-[260px]">
-        {offline ? (
-          <div
-            className="bg-warning/15 px-4 py-2 text-center text-sm font-medium text-warning"
-            role="status"
-          >
-            You&apos;re offline — changes will sync when you reconnect.
-          </div>
-        ) : null}
-        <main className="mx-auto min-h-[100dvh] w-full max-w-6xl px-0 pt-[calc(var(--header-h)+var(--safe-top))] pb-[calc(var(--tabbar-h)+var(--safe-bottom)+5.5rem)] md:px-6 md:pt-8 md:pb-10">
-          {!hydrated || hydrating ? <PageSkeleton /> : children}
-        </main>
-      </div>
-      <MobileTabBar />
-    </div>
-  );
+  return <AuthenticatedApp>{children}</AuthenticatedApp>;
 }

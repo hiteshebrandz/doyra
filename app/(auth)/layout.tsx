@@ -1,8 +1,11 @@
-"use client";
-
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { AuthGuard } from "@/components/auth/AuthGuard";
 import { BrandLogo } from "@/components/layout/BrandLogo";
-import type { ReactNode } from "react";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: true },
+};
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (

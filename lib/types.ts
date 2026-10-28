@@ -119,10 +119,10 @@ export const DEFAULT_SETTINGS: UserSettings = {
 };
 
 export const HABIT_PRESETS: Omit<Habit, "id" | "createdAt" | "archived">[] = [
-  { name: "Gym", icon: "💪", color: "#6366F1" },
-  { name: "Water", icon: "💧", color: "#06B6D4" },
-  { name: "Reading", icon: "📚", color: "#8B5CF6" },
-  { name: "Meditation", icon: "🧘", color: "#22C55E" },
+  { name: "Gym", icon: "dumbbell", color: "#6366F1" },
+  { name: "Water", icon: "droplets", color: "#06B6D4" },
+  { name: "Reading", icon: "book-open", color: "#8B5CF6" },
+  { name: "Meditation", icon: "brain", color: "#22C55E" },
 ];
 
 export const HABIT_COLORS = [

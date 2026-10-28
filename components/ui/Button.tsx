@@ -23,6 +23,18 @@ const sizes: Record<Size, string> = {
   icon: "h-11 w-11 rounded-full inline-flex items-center justify-center",
 };
 
+const base =
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl font-bold transition duration-150 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 focus-ring";
+
+/** Same classes as <Button>, for links that should look like buttons. */
+export function buttonClassName(
+  variant: Variant = "primary",
+  size: Size = "md",
+  className?: string,
+) {
+  return cn(base, variants[variant], sizes[size], className);
+}
+
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: Variant;
   size?: Size;
@@ -45,12 +57,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     <button
       ref={ref}
       disabled={disabled || loading}
-      className={cn(
-        "inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl font-bold transition duration-150 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 focus-ring",
-        variants[variant],
-        sizes[size],
-        className,
-      )}
+      className={buttonClassName(variant, size, className)}
       {...props}
     >
       {loading ? (

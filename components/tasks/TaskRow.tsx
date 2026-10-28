@@ -70,7 +70,7 @@ export function TaskRow({
           void animate(x, 0, { type: "spring", stiffness: 400, damping: 30 });
         }}
         className={cn(
-          "relative flex flex-col rounded-3xl border border-outline-variant bg-surface-container-lowest p-4 transition duration-200",
+          "relative flex flex-col rounded-3xl border border-outline-variant bg-surface-container-lowest p-5 transition duration-200",
           overdue && !task.done && "border-error",
           task.done && "opacity-80",
         )}

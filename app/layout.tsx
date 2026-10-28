@@ -3,6 +3,7 @@ import { Darker_Grotesque, DM_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { ToastProvider } from "@/components/ui/Toast";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL, isPreviewDeployment } from "@/lib/site";
 import "./globals.css";
 
 const display = Darker_Grotesque({
@@ -20,13 +21,36 @@ const body = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Ritualoop — Plan it. Do it. Repeat.",
-    template: "%s · Ritualoop",
+    default: SITE_TITLE,
+    template: `%s · ${SITE_NAME}`,
   },
-  description:
-    "Ritualoop is a calm personal task and habit manager. Plan it. Do it. Repeat.",
-  applicationName: "Ritualoop",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  robots: isPreviewDeployment
+    ? { index: false, follow: false }
+    : { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Ritualoop — Plan it. Do it. Repeat.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/og.png"],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -49,7 +73,6 @@ export const viewport: Viewport = {
   ],
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
   viewportFit: "cover",
 };
 

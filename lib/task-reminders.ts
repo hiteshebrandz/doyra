@@ -2,11 +2,12 @@ import type { Habit, Task } from "@/lib/types";
 import { isNativeApp } from "@/lib/native-app";
 import { dayOfMonthKey, toMonthKey } from "@/lib/dates";
 
-const CHANNEL_ID = "doyrai-reminders";
+/** New id so Android picks up sound and vibration. Channel settings are frozen after creation. */
+const CHANNEL_ID = "ritualoop-reminders-v2";
 
 type DayLogs = Record<string, Record<string, Record<string, boolean>>>;
 
-function notificationId(key: string): number {
+export function notificationId(key: string): number {
   let hash = 0;
   for (let i = 0; i < key.length; i += 1) {
     hash = (hash * 31 + key.charCodeAt(i)) | 0;
@@ -55,6 +56,51 @@ function habitDoneOn(logs: DayLogs, habitId: string, now: Date): boolean {
   return Boolean(logs[month]?.[day]?.[habitId]);
 }
 
+async function reminderPlugin() {
+  const { LocalNotifications } = await import("@capacitor/local-notifications");
+  const permission = await LocalNotifications.checkPermissions();
+  if (permission.display !== "granted") {
+    const requested = await LocalNotifications.requestPermissions();
+    if (requested.display !== "granted") return null;
+  }
+  await LocalNotifications.createChannel({
+    id: CHANNEL_ID,
+    name: "Reminders",
+    description: "A soft buzz and vibration until you open the reminder",
+    importance: 5,
+    visibility: 1,
+    vibration: true,
+  });
+  // Do not return the plugin itself. Capacitor rejects `.then`, and an async
+  // return would treat the plugin as a promise.
+  return { notifications: LocalNotifications };
+}
+
+/** Shows a notice immediately and keeps the buzz going until it is opened. */
+export async function presentReminderNotification(input: {
+  id: number;
+  title: string;
+  body: string;
+  extra?: Record<string, string>;
+}): Promise<boolean> {
+  if (!isNativeApp()) return false;
+  const ready = await reminderPlugin();
+  if (!ready) return false;
+  await ready.notifications.schedule({
+    notifications: [
+      {
+        id: input.id,
+        title: input.title,
+        body: input.body,
+        channelId: CHANNEL_ID,
+        schedule: { at: new Date(Date.now() + 800), allowWhileIdle: true },
+        extra: input.extra,
+      },
+    ],
+  });
+  return true;
+}
+
 export async function syncTaskReminders(
   tasks: Task[],
   habits: Habit[] = [],
@@ -69,14 +115,23 @@ export async function syncTaskReminders(
     if (requested.display !== "granted") return;
   }
 
+  await LocalNotifications.deleteChannel({ id: "doyrai-reminders" }).catch(() => undefined);
   await LocalNotifications.createChannel({
     id: CHANNEL_ID,
     name: "Reminders",
-    description: "Warnings for tasks and habits that are still open",
-    importance: 4,
+    description: "A soft buzz and vibration until you open the reminder",
+    importance: 5,
     visibility: 1,
+    vibration: true,
   });
-  await LocalNotifications.cancelAll();
+  const pending = await LocalNotifications.getPending();
+  const owned = pending.notifications.filter((item) => {
+    const extra = item.extra as { broadcastId?: string } | undefined;
+    return !extra?.broadcastId;
+  });
+  if (owned.length) {
+    await LocalNotifications.cancel({ notifications: owned.map((item) => ({ id: item.id })) });
+  }
 
   const notifications = [
     ...tasks.flatMap((task) => {

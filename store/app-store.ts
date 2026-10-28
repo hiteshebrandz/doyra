@@ -27,6 +27,7 @@ import type {
   GymPlan,
 } from "@/lib/types";
 import { DEFAULT_SETTINGS } from "@/lib/types";
+import { chooseGymPlan, readStoredGymPlan, writeStoredGymPlan } from "@/lib/gym-plan-storage";
 
 type LogMonths = Record<string, Record<string, Record<string, boolean>>>;
 
@@ -120,28 +121,44 @@ export const useAppStore = create<AppState>((set, get) => ({
     set({ hydrating: true, error: null, uid });
     try {
       const data = await loadInitialData(uid);
+      const storedPlan = readStoredGymPlan(uid);
+      const gymPlan = chooseGymPlan(storedPlan, data.gymPlan);
+      const deviceHasNewerPlan = Boolean(gymPlan && gymPlan !== data.gymPlan);
+      if (gymPlan) writeStoredGymPlan(uid, gymPlan);
       set({
         settings: data.settings,
         habits: data.habits,
         tasks: data.tasks,
         logs: { [data.currentMonth]: data.currentLog },
-        gymPlan: data.gymPlan,
+        gymPlan,
         gymLogs: {},
         gymLoadedMonths: {},
         hydrated: true,
         hydrating: false,
+        pending: deviceHasNewerPlan
+          ? mergePending(get().pending, { gymPlan })
+          : get().pending,
       });
+      if (deviceHasNewerPlan) get().queueFlush();
       // Rotate completed tasks older than 30 days (client-side archival)
       get().rotateOldCompleted();
     } catch (e) {
       const message = e instanceof Error ? e.message : "Failed to load data";
-      set({ error: message, hydrating: false, hydrated: true });
+      const storedPlan = readStoredGymPlan(uid);
+      set({
+        error: message,
+        hydrating: false,
+        hydrated: true,
+        gymPlan: storedPlan ?? get().gymPlan,
+      });
     }
   },
 
   reset: () => {
     const timer = get().flushTimer;
     if (timer) clearTimeout(timer);
+    const uid = get().uid;
+    if (uid) writeStoredGymPlan(uid, null);
     set({
       uid: null,
       hydrated: false,
@@ -405,6 +422,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   setGymPlan: (plan) => {
+    const uid = get().uid;
+    if (uid) writeStoredGymPlan(uid, plan);
     set((s) => ({
       gymPlan: plan,
       pending: mergePending(s.pending, { gymPlan: plan }),
@@ -486,6 +505,7 @@ export const useAppStore = create<AppState>((set, get) => ({
       gymLogs: payload.gym?.logs ?? {},
       pending: emptyPending(),
     });
+    writeStoredGymPlan(uid, payload.gym?.plan ?? null);
   },
 
   deleteMyData: async () => {

@@ -3,10 +3,15 @@
 import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input, Label } from "@/components/ui/Input";
+import { HabitIcon } from "@/components/habits/HabitIcon";
+import {
+  HABIT_ICON_KEYS,
+  HABIT_ICON_LABELS,
+  toHabitIconKey,
+  type HabitIconKey,
+} from "@/lib/habit-icons";
 import { HABIT_COLORS, HABIT_PRESETS, type Habit } from "@/lib/types";
 import { cn } from "@/lib/utils";
-
-const EMOJIS = ["💪", "💧", "📚", "🧘", "🏃", "🥗", "😴", "📝", "🎯", "🎵"];
 
 export type HabitFormValues = {
   name: string;
@@ -27,7 +32,7 @@ export function HabitForm({
   submitLabel?: string;
 }) {
   const [name, setName] = useState(initial?.name ?? "");
-  const [icon, setIcon] = useState(initial?.icon ?? "💪");
+  const [icon, setIcon] = useState<HabitIconKey>(toHabitIconKey(initial?.icon));
   const [color, setColor] = useState(initial?.color ?? HABIT_COLORS[0]);
   const [remind, setRemind] = useState(Boolean(initial?.reminderTime));
   const [reminderTime, setReminderTime] = useState(initial?.reminderTime || "20:00");
@@ -50,14 +55,15 @@ export function HabitForm({
           <button
             key={p.name}
             type="button"
-            className="rounded-xl bg-surface-container-low px-3 py-2 text-sm font-semibold focus-ring"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-surface-container-low px-3 py-2 text-sm font-semibold focus-ring"
             onClick={() => {
               setName(p.name);
-              setIcon(p.icon);
+              setIcon(toHabitIconKey(p.icon));
               setColor(p.color);
             }}
           >
-            {p.icon} {p.name}
+            <HabitIcon icon={p.icon} className="h-4 w-4 text-on-surface-variant" />
+            {p.name}
           </button>
         ))}
       </div>
@@ -74,20 +80,22 @@ export function HabitForm({
       <div>
         <Label>Icon</Label>
         <div className="flex flex-wrap gap-2">
-          {EMOJIS.map((e) => (
+          {HABIT_ICON_KEYS.map((key) => (
             <button
-              key={e}
+              key={key}
               type="button"
-              aria-label={`Icon ${e}`}
-              onClick={() => setIcon(e)}
+              aria-label={HABIT_ICON_LABELS[key]}
+              aria-pressed={icon === key}
+              title={HABIT_ICON_LABELS[key]}
+              onClick={() => setIcon(key)}
               className={cn(
-                "flex h-11 w-11 items-center justify-center rounded-2xl text-xl focus-ring",
-                icon === e
-                  ? "bg-primary-fixed ring-2 ring-primary"
-                  : "bg-surface-container-low",
+                "flex h-11 w-11 items-center justify-center rounded-2xl focus-ring transition",
+                icon === key
+                  ? "bg-primary-fixed text-primary ring-2 ring-primary"
+                  : "bg-surface-container-low text-on-surface-variant hover:text-on-surface",
               )}
             >
-              {e}
+              <HabitIcon icon={key} />
             </button>
           ))}
         </div>

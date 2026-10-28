@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CheckSquare, ListChecks, Flame, BadgeCheck, Plus } from "lucide-react";
+import { CheckSquare, ListChecks, Flame, BadgeCheck, Plus, Check } from "lucide-react";
 import { MobileHeader, MobileFab } from "@/components/layout/AppShell";
+import { HabitIcon } from "@/components/habits/HabitIcon";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { ResponsiveDialog } from "@/components/ui/Sheet";
@@ -25,7 +26,6 @@ import {
 import { useToast } from "@/components/ui/Toast";
 import { KeyboardShortcuts } from "@/components/layout/KeyboardShortcuts";
 import { cn, vibrate } from "@/lib/utils";
-import { Check } from "lucide-react";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -104,7 +104,7 @@ export default function DashboardPage() {
     {
       label: "Completed",
       value: counts.completed,
-      hint: "Keep going",
+      hint: "All time",
       icon: <ListChecks className="h-[18px] w-[18px]" />,
       glow: "bg-tertiary-fixed/50",
       iconBg: "bg-tertiary-fixed text-tertiary",
@@ -113,7 +113,7 @@ export default function DashboardPage() {
     {
       label: "Habits Done",
       value: `${habitDone.done}/${active.length || 0}`,
-      hint: habitDone.pct >= 75 ? "High flow state" : "Build momentum",
+      hint: habitDone.pct >= 75 ? "Almost all done" : "Still to check",
       icon: <Flame className="h-[18px] w-[18px]" />,
       glow: "bg-secondary-fixed/50",
       iconBg: "bg-secondary-fixed text-secondary",
@@ -122,7 +122,7 @@ export default function DashboardPage() {
     {
       label: "Overdue",
       value: counts.overdue,
-      hint: counts.overdue === 0 ? "Caught up 🎉" : "Needs attention",
+      hint: counts.overdue === 0 ? "All clear" : "Needs attention",
       icon: <BadgeCheck className="h-[18px] w-[18px]" />,
       glow: "bg-surface-container-high/60",
       iconBg: "bg-surface-container text-on-surface-variant",
@@ -135,7 +135,7 @@ export default function DashboardPage() {
       <MobileHeader title="Dashboard Today" />
       <KeyboardShortcuts onNewTask={() => setOpen(true)} />
 
-      <div className="px-4 md:px-0 space-y-6">
+      <div className="space-y-8 px-5 md:px-0">
         {/* Hero greeting */}
         <section className="relative w-full overflow-hidden rounded-3xl border border-outline-variant bg-surface-container-lowest p-5">
           <div className="relative z-10 flex flex-col space-y-3">
@@ -144,28 +144,30 @@ export default function DashboardPage() {
                 {dateLabel}
               </span>
               <div className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary-fixed px-3 py-1 text-[12px] font-semibold text-primary">
-                <span aria-hidden>🔥</span>
-                <span>Keep your flow</span>
+                <Flame className="h-3.5 w-3.5" aria-hidden />
+                <span>Today</span>
               </div>
             </div>
             <div className="min-w-0">
-              <h1 className="break-words text-[2.25rem] font-extrabold leading-none text-on-surface md:text-4xl">
+              <h1 className="break-words font-heading text-[2.25rem] font-extrabold leading-none text-on-surface md:text-4xl">
                 {greetingForNow()}, {name}
               </h1>
               <p className="mt-2 text-sm leading-relaxed text-on-surface-variant">
-                Small disciplined actions compound into quiet mastery.
+                {counts.pending === 0
+                  ? "Nothing open today. Add a task or check a habit."
+                  : `${counts.pending} task${counts.pending === 1 ? "" : "s"} still open. Habits ${habitDone.done} of ${active.length} done.`}
               </p>
             </div>
           </div>
         </section>
 
         {/* Stat cards */}
-        <section className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
+        <section className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-5">
           {stats.map((s) => (
             <div
               key={s.label}
               className={cn(
-                "relative flex flex-col justify-between overflow-hidden rounded-3xl bg-surface-container-lowest p-4 transition duration-200 active:scale-[0.98]",
+                "relative flex flex-col justify-between overflow-hidden rounded-3xl bg-surface-container-lowest p-5 transition duration-200 active:scale-[0.98]",
                 s.shadow,
               )}
             >
@@ -196,7 +198,7 @@ export default function DashboardPage() {
           ))}
         </section>
 
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid gap-5 lg:grid-cols-3">
           {/* Habit focus */}
           <GlassCard className="rounded-3xl lg:col-span-1">
             <div className="flex items-center justify-between mb-4">
@@ -208,7 +210,7 @@ export default function DashboardPage() {
                   </span>
                 </div>
                 <p className="text-[0.75rem] text-on-surface-variant mt-0.5">
-                  Maintain consistent momentum
+                  Tap the circle when a habit is done
                 </p>
               </div>
               <ProgressRing value={habitDone.pct} size={56} stroke={4.5} />
@@ -248,7 +250,7 @@ export default function DashboardPage() {
             </div>
             {todayTasks.length === 0 ? (
               <p className="py-8 text-center text-sm text-on-surface-variant">
-                No tasks due today. Enjoy the calm — or add one.
+                No tasks due today. Add one if something comes up.
               </p>
             ) : (
               <ul className="space-y-2">
@@ -335,8 +337,8 @@ function HabitFocusRow({
       )}
     >
       <div className="flex items-center gap-3 min-w-0">
-        <div className="w-10 h-10 rounded-xl bg-surface-container-lowest flex items-center justify-center text-lg shadow-sm flex-shrink-0">
-          {icon}
+        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-surface-container text-on-surface-variant">
+          <HabitIcon icon={icon} className="h-[18px] w-[18px]" />
         </div>
         <div className="min-w-0">
           <span
@@ -347,8 +349,9 @@ function HabitFocusRow({
           >
             {name}
           </span>
-          <span className="text-[0.6875rem] font-semibold text-tertiary">
-            {stats.current}-day streak 🔥
+          <span className="inline-flex items-center gap-1 text-[0.6875rem] font-semibold text-tertiary">
+            <Flame className="h-3 w-3" aria-hidden />
+            {stats.current}-day streak
           </span>
         </div>
       </div>

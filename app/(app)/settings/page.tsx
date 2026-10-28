@@ -99,16 +99,16 @@ export default function SettingsPage() {
     <div>
       <MobileHeader title="Settings" />
 
-      <div className="px-4 md:px-0">
+      <div className="px-5 md:px-0">
         <div className="mb-6 hidden md:block">
-          <h1 className="text-2xl font-bold tracking-tight text-on-surface">Settings</h1>
+          <h1 className="font-heading text-3xl font-extrabold tracking-tight text-on-surface">Settings</h1>
           <p className="text-sm text-on-surface-variant">
             Profile, preferences, and backups.
           </p>
         </div>
 
         <div className="space-y-4 max-w-xl">
-          <GlassCard className="rounded-2xl">
+          <GlassCard className="rounded-3xl">
             <h2 className="mb-3 font-bold text-on-surface">Profile</h2>
             <Label htmlFor="display-name">Display name</Label>
             <Input
@@ -125,7 +125,7 @@ export default function SettingsPage() {
             </Button>
           </GlassCard>
 
-          <GlassCard className="rounded-2xl">
+          <GlassCard className="rounded-3xl">
             <h2 className="mb-3 font-bold text-on-surface">Appearance</h2>
             <div className="flex items-center justify-between gap-3">
               <div className="min-w-0">
@@ -155,7 +155,7 @@ export default function SettingsPage() {
           </GlassCard>
 
           {nativeApp ? null : (
-            <GlassCard className="rounded-2xl">
+            <GlassCard className="rounded-3xl">
               <h2 className="mb-1 font-bold text-on-surface">Android app</h2>
               <p className="mb-3 text-sm text-on-surface-variant">
                 Install Ritualoop on your phone. Unfinished tasks remind you at 8:00 pm.
@@ -163,7 +163,7 @@ export default function SettingsPage() {
               </p>
               <a
                 href="/doyrai.apk"
-                download="Doyrai.apk"
+                download="Ritualoop.apk"
                 className="inline-flex h-11 min-h-11 items-center justify-center gap-2 rounded-xl bg-primary/10 px-4 text-[15px] font-semibold text-primary transition hover:bg-primary/15 focus-ring"
               >
                 <Smartphone className="h-4 w-4" /> Download app
@@ -171,7 +171,7 @@ export default function SettingsPage() {
             </GlassCard>
           )}
 
-          <GlassCard className="rounded-2xl">
+          <GlassCard className="rounded-3xl">
             <h2 className="mb-1 font-bold text-on-surface">Backup</h2>
             <p className="mb-3 text-sm text-on-surface-variant">
               Export or import your data as JSON. This is your backup mechanism.
@@ -201,7 +201,7 @@ export default function SettingsPage() {
             </div>
           </GlassCard>
 
-          <GlassCard className="rounded-2xl">
+          <GlassCard className="rounded-3xl">
             <h2 className="mb-3 font-bold text-on-surface">Account</h2>
             <Button
               variant="secondary"
@@ -227,7 +227,7 @@ export default function SettingsPage() {
         title="Delete all data?"
       >
         <p className="text-sm text-on-surface-variant">
-          This permanently deletes your Doyrai tasks, habits, and logs from
+          This permanently deletes your Ritualoop tasks, habits, and logs from
           Firestore, then signs you out. Export a backup first if you might
           need it.
         </p>

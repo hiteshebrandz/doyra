@@ -27,3 +27,23 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+// The looping reminder buzz starts from the notification plugin. npm install
+// replaces that plugin, so copy the patched receivers back before it compiles.
+gradle.projectsEvaluated {
+    def notifications = rootProject.subprojects.find { it.name == "capacitor-local-notifications" }
+    if (notifications != null) {
+        def patchReminderBuzz = tasks.register("patchReminderBuzz") {
+            doLast {
+                copy {
+                    from("${rootDir}/patches/local-notifications")
+                    into(new File(notifications.projectDir, "src/main/kotlin/com/capacitorjs/plugins/localnotifications"))
+                    include("*.kt")
+                }
+            }
+        }
+        notifications.tasks.matching { it.name == "preBuild" }.configureEach {
+            dependsOn(patchReminderBuzz)
+        }
+    }
+}

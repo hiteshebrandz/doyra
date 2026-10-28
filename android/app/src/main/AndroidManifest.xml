@@ -25,6 +25,15 @@
 
         </activity>
 
+        <service
+            android:name=".ReminderBuzzService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
+
+        <receiver
+            android:name=".ReminderBuzzStopReceiver"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

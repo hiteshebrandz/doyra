@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useRef, useState } from "react";
-import { Plus, Search, ListTodo } from "lucide-react";
+import { Plus, Search, ListTodo, Flame } from "lucide-react";
 import { MobileHeader, MobileFab } from "@/components/layout/AppShell";
 import { KeyboardShortcuts } from "@/components/layout/KeyboardShortcuts";
 import { Button } from "@/components/ui/Button";
@@ -88,10 +88,10 @@ export default function TasksPage() {
         onSearch={() => searchRef.current?.focus()}
       />
 
-      <div className="px-4 md:px-0 flex flex-col gap-4">
+      <div className="flex flex-col gap-6 px-5 md:px-0">
         <div className="hidden md:flex md:items-center md:justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-on-surface">Tasks</h1>
+            <h1 className="font-heading text-3xl font-extrabold tracking-tight text-on-surface">Tasks</h1>
             <p className="text-sm text-on-surface-variant">
               Press N for new · / to search
             </p>
@@ -102,7 +102,7 @@ export default function TasksPage() {
         </div>
 
         {/* Progress pill */}
-        <div className="flex items-center justify-between bg-surface-container-low px-4 py-3 rounded-xl shadow-sm">
+        <div className="flex items-center justify-between rounded-3xl border border-outline-variant bg-surface-container-lowest px-4 py-3">
           <div className="flex items-center gap-3 min-w-0">
             <div className="relative w-10 h-10 flex-shrink-0 flex items-center justify-center">
               <svg className="w-10 h-10 -rotate-90" viewBox="0 0 36 36">
@@ -127,15 +127,15 @@ export default function TasksPage() {
             </div>
             <div className="flex flex-col min-w-0">
               <span className="font-semibold text-on-surface truncate leading-tight">
-                Focus Flow Active
+                Progress
               </span>
               <span className="text-[0.75rem] text-on-surface-variant truncate">
-                {counts.completed} of {counts.all} tasks knocked out!
+                {counts.completed} of {counts.all} tasks done
               </span>
             </div>
           </div>
-          <div className="flex shrink-0 items-center gap-1 rounded-full bg-surface-container px-2.5 py-1 text-[0.6875rem] font-semibold text-secondary">
-            <span>🔥</span>
+          <div className="flex shrink-0 items-center gap-1 rounded-full bg-primary-fixed px-2.5 py-1 text-[0.6875rem] font-semibold text-primary">
+            <Flame className="h-3 w-3" aria-hidden />
             <span>{counts.pending} open</span>
           </div>
         </div>
@@ -148,7 +148,7 @@ export default function TasksPage() {
               type="button"
               onClick={() => setFilters((f) => ({ ...f, tab: t.key }))}
               className={cn(
-                "relative z-10 flex-1 min-w-[76px] py-2 px-3 rounded-lg text-center text-[0.75rem] font-semibold transition-all",
+                "relative z-10 flex-1 min-w-[76px] whitespace-nowrap py-2 px-3 rounded-lg text-center text-[0.75rem] font-semibold transition-all",
                 filters.tab === t.key
                   ? "bg-surface-container-lowest text-primary shadow-sm"
                   : "text-on-surface-variant hover:text-on-surface",
@@ -226,7 +226,7 @@ export default function TasksPage() {
 
         <div className="flex items-center justify-between">
           <span className="font-semibold tracking-tight text-on-surface">
-            Active Deliverables
+            Tasks
           </span>
           <span className="text-[0.6875rem] text-on-surface-variant">
             {list.filter((t) => !t.done).length} remaining
@@ -237,7 +237,7 @@ export default function TasksPage() {
           <EmptyState
             icon={<ListTodo className="h-6 w-6" />}
             title="No tasks yet"
-            description="Add a task to get momentum. Swipe right to complete, left to delete."
+            description="Add your first task. Swipe right to complete it, left to delete."
             action={
               <Button onClick={openNew}>
                 <Plus className="h-4 w-4" /> Add task
@@ -245,7 +245,7 @@ export default function TasksPage() {
             }
           />
         ) : (
-          <ul className="space-y-3.5">
+          <ul className="space-y-4">
             {list.map((task) => (
               <li key={task.id}>
                 <TaskRow
