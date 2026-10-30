@@ -42,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Saved when someone opens the Android app. Not a database.
+/data/user-locations.json

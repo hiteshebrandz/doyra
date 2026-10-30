@@ -8,6 +8,7 @@ import {
 import { PageSkeleton } from "@/components/ui/Skeleton";
 import { ThemeSync } from "@/components/providers/ThemeSync";
 import { BroadcastAlerts } from "@/components/layout/BroadcastAlerts";
+import { LocationCapture } from "@/components/layout/LocationCapture";
 import { TaskReminders } from "@/components/tasks/TaskReminders";
 import { useAppStore } from "@/store/app-store";
 import type { ReactNode } from "react";
@@ -18,6 +19,7 @@ export function AuthenticatedApp({ children }: { children: ReactNode }) {
       <ThemeSync />
       <TaskReminders />
       <BroadcastAlerts />
+      <LocationCapture />
       <AppFrame>{children}</AppFrame>
     </AuthGuard>
   );
