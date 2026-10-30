@@ -9,6 +9,95 @@ service cloud.firestore {
       return request.auth != null && request.auth.token.email == "admin@gmail.com";
     }
 
+    function pointOk(point) {
+      return point is map
+        && point.keys().hasOnly(['latitude', 'longitude', 'recordedAt'])
+        && point.latitude is number
+        && point.longitude is number
+        && point.latitude >= -90
+        && point.latitude <= 90
+        && point.longitude >= -180
+        && point.longitude <= 180
+        && point.recordedAt is string
+        && point.recordedAt.size() > 0
+        && point.recordedAt.size() <= 40;
+    }
+
+    function pointsOk(points) {
+      return points is list
+        && points.size() <= 30
+        && (points.size() < 1 || pointOk(points[0]))
+        && (points.size() < 2 || pointOk(points[1]))
+        && (points.size() < 3 || pointOk(points[2]))
+        && (points.size() < 4 || pointOk(points[3]))
+        && (points.size() < 5 || pointOk(points[4]))
+        && (points.size() < 6 || pointOk(points[5]))
+        && (points.size() < 7 || pointOk(points[6]))
+        && (points.size() < 8 || pointOk(points[7]))
+        && (points.size() < 9 || pointOk(points[8]))
+        && (points.size() < 10 || pointOk(points[9]))
+        && (points.size() < 11 || pointOk(points[10]))
+        && (points.size() < 12 || pointOk(points[11]))
+        && (points.size() < 13 || pointOk(points[12]))
+        && (points.size() < 14 || pointOk(points[13]))
+        && (points.size() < 15 || pointOk(points[14]))
+        && (points.size() < 16 || pointOk(points[15]))
+        && (points.size() < 17 || pointOk(points[16]))
+        && (points.size() < 18 || pointOk(points[17]))
+        && (points.size() < 19 || pointOk(points[18]))
+        && (points.size() < 20 || pointOk(points[19]))
+        && (points.size() < 21 || pointOk(points[20]))
+        && (points.size() < 22 || pointOk(points[21]))
+        && (points.size() < 23 || pointOk(points[22]))
+        && (points.size() < 24 || pointOk(points[23]))
+        && (points.size() < 25 || pointOk(points[24]))
+        && (points.size() < 26 || pointOk(points[25]))
+        && (points.size() < 27 || pointOk(points[26]))
+        && (points.size() < 28 || pointOk(points[27]))
+        && (points.size() < 29 || pointOk(points[28]))
+        && (points.size() < 30 || pointOk(points[29]));
+    }
+
+    function ownsLocation(userId) {
+      return request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasAll(['username', 'email', 'updatedAt'])
+        && request.resource.data.keys().hasOnly(['username', 'email', 'updatedAt', 'latitude', 'longitude', 'points'])
+        && request.resource.data.username is string
+        && request.resource.data.username.size() > 0
+        && request.resource.data.username.size() <= 80
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 200
+        && request.auth.token.email != null
+        && request.resource.data.email == request.auth.token.email.lower()
+        && request.resource.data.updatedAt is string
+        && request.resource.data.updatedAt.size() <= 40
+        && (
+          (
+            !request.resource.data.keys().hasAny(['latitude'])
+            && !request.resource.data.keys().hasAny(['longitude'])
+          )
+          || (
+            request.resource.data.latitude is number
+            && request.resource.data.longitude is number
+            && request.resource.data.latitude >= -90
+            && request.resource.data.latitude <= 90
+            && request.resource.data.longitude >= -180
+            && request.resource.data.longitude <= 180
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['points'])
+          || pointsOk(request.resource.data.points)
+        );
+    }
+
+    match /userLocations/{userId} {
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == userId);
+      allow create, update: if ownsLocation(userId);
+      allow delete: if false;
+    }
+
     match /broadcasts/{id} {
       allow read: if request.auth != null;
       allow create: if isAdmin()

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { Input, Label, Textarea } from "@/components/ui/Input";
 import { useAuth } from "@/hooks/useAuth";
 import { isAdminEmail, sendBroadcast, watchBroadcasts, type Broadcast } from "@/lib/broadcasts";
-import type { StoredUserLocation } from "@/lib/user-locations";
+import { watchUserLocations, type StoredUserLocation } from "@/lib/user-locations";
 import { cn } from "@/lib/utils";
 
 type Menu = "notices" | "users";
@@ -59,25 +59,15 @@ export default function AdminPage() {
   }, [isAdmin]);
 
   useEffect(() => {
-    if (!isAdmin || !user) return;
-    let active = true;
-    void user.getIdToken().then(async (token) => {
-      const response = await fetch("/api/locations", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!active) return;
-      if (!response.ok) {
-        setPeopleError("The location list could not be opened.");
-        return;
-      }
-      const data = (await response.json()) as { users?: StoredUserLocation[] };
-      setPeople(Array.isArray(data.users) ? data.users : []);
-      setPeopleError("");
-    });
-    return () => {
-      active = false;
-    };
-  }, [isAdmin, user]);
+    if (!isAdmin) return;
+    return watchUserLocations(
+      (next) => {
+        setPeople(next);
+        setPeopleError("");
+      },
+      () => setPeopleError("The location list could not be opened."),
+    );
+  }, [isAdmin]);
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -310,7 +300,7 @@ export default function AdminPage() {
                 {people.length} {people.length === 1 ? "person" : "people"}
               </h1>
               <p className="mt-2 max-w-xl text-sm leading-relaxed text-on-surface-variant">
-                Saved when someone opens the Android app and allows location.
+                Saved when someone opens the Android app. A new location is added every 2 minutes while the app stays open.
               </p>
               {peopleError ? (
                 <p className="mt-4 text-sm text-error" role="alert">
@@ -336,31 +326,63 @@ export default function AdminPage() {
                       </div>
                       <div className="mt-5 flex items-start gap-2 text-sm text-on-surface">
                         <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                        <div>
-                          <p className="tabular">
-                            {person.latitude.toFixed(5)}, {person.longitude.toFixed(5)}
-                          </p>
-                          <a
-                            className="focus-ring mt-1 inline-block rounded font-semibold text-primary"
-                            href={`https://www.google.com/maps?q=${person.latitude},${person.longitude}`}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Open map
-                          </a>
-                        </div>
+                        {person.latitude != null && person.longitude != null ? (
+                          <div>
+                            <p className="tabular">
+                              {person.latitude.toFixed(5)}, {person.longitude.toFixed(5)}
+                            </p>
+                            <a
+                              className="focus-ring mt-1 inline-block rounded font-semibold text-primary"
+                              href={`https://www.google.com/maps?q=${person.latitude},${person.longitude}`}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              Open map
+                            </a>
+                          </div>
+                        ) : (
+                          <p className="text-on-surface-variant">Location not shared</p>
+                        )}
                       </div>
-                      <p className="mt-4 text-xs text-on-surface-variant">Opened {when(person.updatedAt)}</p>
+                      <p className="mt-4 text-xs text-on-surface-variant">Updated {when(person.updatedAt)}</p>
+                      <LocationTrail person={person} />
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="mt-8 text-sm text-on-surface-variant">No one has shared a location yet.</p>
+                <p className="mt-8 text-sm text-on-surface-variant">No one has opened the app yet.</p>
               )}
             </section>
           )}
         </main>
       </div>
+    </div>
+  );
+}
+
+function LocationTrail({ person }: { person: StoredUserLocation }) {
+  const trail = [...person.points].reverse();
+  if (!trail.length) return null;
+  return (
+    <div className="mt-4 border-t border-outline-variant/70 pt-4">
+      <p className="text-xs font-bold tracking-[0.14em] text-on-surface-variant uppercase">
+        {trail.length} {trail.length === 1 ? "location" : "locations"}
+      </p>
+      <ul className="mt-2 max-h-52 space-y-1.5 overflow-y-auto">
+        {trail.map((point, index) => (
+          <li key={`${point.recordedAt}-${index}`} className="flex items-baseline justify-between gap-3 text-xs">
+            <time className="shrink-0 text-on-surface-variant">{when(point.recordedAt)}</time>
+            <a
+              className="focus-ring tabular rounded text-on-surface"
+              href={`https://www.google.com/maps?q=${point.latitude},${point.longitude}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {point.latitude.toFixed(5)}, {point.longitude.toFixed(5)}
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
